@@ -113,6 +113,13 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
             temperature, raw_temperature, humidity, raw_humidity,
             pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
             breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
+
+    // Находим длину строки
+    int len = strlen(buffer);
+
+    // Устанавливаем нулевой символ сразу после последнего значимого символа
+    buffer[len] = '0';
+
     sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
     system(command);
 
