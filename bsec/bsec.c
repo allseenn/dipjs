@@ -106,9 +106,9 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float breath_voc_equivalent)
 {
     time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
+    //struct tm tm = *localtime(&t);
     if (once) {
-        printf("%d", tm);
+        printf("%ld", t);
         printf("%.2f ", temperature); /* Celsius */
         printf("%.2f ", raw_temperature); /* Celsius */
         printf("%.2f ", humidity); /* % */
