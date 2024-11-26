@@ -16,8 +16,8 @@ while true; do
     
     echo "$dinamic $static"
 
-    redis-cli dyn_rad $dinamic > /dev/null
-    redis-cli stat_rad $static > /dev/null
+    redis-cli SET dyn_rad $dinamic > /dev/null
+    redis-cli SET stat_rad $static > /dev/null
 
     
     if [ -n "$1" ] && [ "$1" -eq 0 ]; then
