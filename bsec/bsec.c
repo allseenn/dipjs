@@ -106,32 +106,19 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float breath_voc_equivalent)
 {
     time_t t = time(NULL);
-
-    char command[1024];
-    char buffer[1024];
-    sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.0f",
-            temperature, raw_temperature, humidity, raw_humidity,
-            pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
-            breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, '\0');
-
-    sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
-
-
-        // Создаем временный файловый дескриптор для /dev/null
-    int dev_null = open("/dev/null", O_WRONLY);
-
-    // Сохраняем стандартный вывод во временный файловый дескриптор
-    int saved_stdout = dup(fileno(stdout));
-    dup2(dev_null, fileno(stdout));
-
-    // Выполняем команду
-    system(command);
-
-    // Восстанавливаем стандартный вывод
-    dup2(saved_stdout, fileno(stdout));
-
-    // Закрываем временный файловый дескриптор
-    close(dev_null);
+    system("redis-cli set temperature $(printf '%lu' t) > /dev/null");
+    system("redis-cli set temperature $(printf '%.2f' temperature) > /dev/null");
+    system("redis-cli set raw_temperature $(printf '%.2f' raw_temperature) > /dev/null");
+    system("redis-cli set humidity $(printf '%.2f' humidity) > /dev/null");
+    system("redis-cli set raw_humidity $(printf '%.2f' raw_humidity) > /dev/null");
+    system("redis-cli set pressure $(printf '%.2f' $(echo \"scale=2; $pressure / 100 * hectoPascal\" | bc)) > /dev/null");
+    system("redis-cli set gas $(printf '%.2f' $(echo \"scale=2; $gas / 1000\" | bc)) > /dev/null");
+    system("redis-cli set co2_equivalent $(printf '%.2f' co2_equivalent) > /dev/null");
+    system("redis-cli set breath_voc_equivalent $(printf '%.2f' breath_voc_equivalent) > /dev/null");
+    system("redis-cli set iaq $(printf '%.2f' iaq) > /dev/null");
+    system("redis-cli set static_iaq $(printf '%.2f' static_iaq) > /dev/null");
+    system("redis-cli set iaq_accuracy $(printf '%.0f' iaq_accuracy) > /dev/null");
+    system("redis-cli set bsec_status $(printf '%.0f' bsec_status) > /dev/null");
 
     if (once) {
         //printf("%lu", (unsigned long)t);

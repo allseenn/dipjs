@@ -1,27 +1,27 @@
 const express = require('express');
-const fs = require('fs');
+const redis = require('redis');
 
 const app = express();
-const PORT = 8080;
-const namedPipePath = '/tmp/bsec';
+const PORT = 1080;
+
+// Подключение к локальному Redis
+const client = redis.createClient();
 
 let latestData = '';
 
-// Следим за изменениями в файле и обновляем данные
-fs.watch(namedPipePath, () => {
-    const readStream = fs.createReadStream(namedPipePath, { encoding: 'utf8' });
-    readStream.on('data', (chunk) => {
-        latestData = chunk;
-    });
-    readStream.close();
+// Следим за изменениями в Redis и обновляем данные
+client.on('message', (channel, message) => {
+    latestData = message;
 });
+
+client.subscribe('dataChannel');
 
 app.get('/', (req, res) => {
     res.send(`
         <html>
-            <head><title>Данные из канала</title></head>
+            <head><title>Данные из Redis</title></head>
             <body>
-                <h1>Данные из канала:</h1>
+                <h1>Данные из Redis:</h1>
                 <pre>${latestData}</pre>
             </body>
         </html>
