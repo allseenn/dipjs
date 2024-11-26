@@ -115,7 +115,23 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
             breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, '\0');
 
     sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
+
+
+        // Создаем временный файловый дескриптор для /dev/null
+    int dev_null = open("/dev/null", O_WRONLY);
+
+    // Сохраняем стандартный вывод во временный файловый дескриптор
+    int saved_stdout = dup(fileno(stdout));
+    dup2(dev_null, fileno(stdout));
+
+    // Выполняем команду
     system(command);
+
+    // Восстанавливаем стандартный вывод
+    dup2(saved_stdout, fileno(stdout));
+
+    // Закрываем временный файловый дескриптор
+    close(dev_null);
 
     if (once) {
         printf("%lu", (unsigned long)t);
