@@ -1,10 +1,10 @@
 TARGET=bsec
-ARG=-lhiredis -lm -lrt -static -std=c99 -pedantic -I/usr/include/hiredis -L/usr/lib -D_FILE_OFFSET_BITS=64
+ARG=-I/usr/include/hiredis -L/usr/lib -D_FILE_OFFSET_BITS=64 -lhiredis -lm -lrt -static -std=c99 -pedantic
 
 all: ${TARGET}
 
 ${TARGET}: ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a 
-	gcc -o ${TARGET} ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a 
+	gcc ${ARG} -o ${TARGET} ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a 
 	
 bsec_integration.o:
 	gcc ${ARG} -o bsec_integration.o -c bsec_integration.c
