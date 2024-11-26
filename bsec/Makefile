@@ -13,7 +13,7 @@ bme680.o:
 	gcc -o bme680.o -c bme680.c
 
 ${TARGET}.o: ${TARGET}.c
-	gcc {$ARG} -o ${TARGET}.o -c ${TARGET}.c 
+	gcc ${$ARG} -o ${TARGET}.o -c ${TARGET}.c 
 
 install:
 	chmod 777 ${TARGET}
