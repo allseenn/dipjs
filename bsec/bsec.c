@@ -126,19 +126,19 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 
     // Выполняем команду
     system(command);
-    system("redis-cli set temperature $(printf '%lu' t)");
-    system("redis-cli set temperature $(printf '%.2f' temperature)");
-    system("redis-cli set raw_temperature $(printf '%.2f' raw_temperature)");
-    system("redis-cli set humidity $(printf '%.2f' humidity)");
-    system("redis-cli set raw_humidity $(printf '%.2f' raw_humidity)");
+    system("redis-cli set temperature $(printf '%lu', t)");
+    system("redis-cli set temperature $(printf '%.2f', temperature)");
+    system("redis-cli set raw_temperature $(printf '%.2f', raw_temperature)");
+    system("redis-cli set humidity $(printf '%.2f', humidity)");
+    system("redis-cli set raw_humidity $(printf '%.2f', raw_humidity)");
     system("redis-cli set pressure $(printf '%.2f' $(echo \"scale=2; $pressure / 100 * hectoPascal\" | bc))");
     system("redis-cli set gas $(printf '%.2f' $(echo \"scale=2; $gas / 1000\" | bc))");
-    system("redis-cli set co2_equivalent $(printf '%.2f' co2_equivalent)");
-    system("redis-cli set breath_voc_equivalent $(printf '%.2f' breath_voc_equivalent)");
-    system("redis-cli set iaq $(printf '%.2f' iaq)");
-    system("redis-cli set static_iaq $(printf '%.2f' static_iaq)");
-    system("redis-cli set iaq_accuracy $(printf '%.0f' iaq_accuracy)");
-    system("redis-cli set bsec_status $(printf '%.0f' bsec_status)");
+    system("redis-cli set co2_equivalent $(printf '%.2f', co2_equivalent)");
+    system("redis-cli set breath_voc_equivalent $(printf '%.2f', breath_voc_equivalent)");
+    system("redis-cli set iaq $(printf '%.2f', iaq)");
+    system("redis-cli set static_iaq $(printf '%.2f', static_iaq)");
+    system("redis-cli set iaq_accuracy $(printf '%.0f', iaq_accuracy)");
+    system("redis-cli set bsec_status $(printf '%.0f', bsec_status)");
 
     // Восстанавливаем стандартный вывод
     dup2(saved_stdout, fileno(stdout));
