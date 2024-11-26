@@ -134,7 +134,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     close(dev_null);
 
     if (once) {
-        printf("%lu", (unsigned long)t);
+        //printf("%lu", (unsigned long)t);
         printf("%.2f ", temperature); /* Celsius */
         printf("%.2f ", raw_temperature); /* Celsius */
         printf("%.2f ", humidity); /* % */
