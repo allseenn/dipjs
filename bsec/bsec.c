@@ -109,12 +109,12 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 
     char command[1024];
     char buffer[1024];
-    sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.f %.8f %.8f %.2f %.2f %.2f %d",
+    sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %d",
             temperature, raw_temperature, humidity, raw_humidity,
             pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
             breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
     sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
-    system(command);
+    //system(command);
 
     if (once) {
         printf("%lu", (unsigned long)t);
@@ -123,7 +123,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.2f ", humidity); /* % */
         printf("%.2f ", raw_humidity); /* % */
         printf("%.2f ", pressure / 100 * hectoPascal); /* hPa */
-        printf("%.f ", gas/1000); /* КOms */
+        printf("%.2f ", gas/1000); /* КOms */
         printf("%.8f ", co2_equivalent); // eCO2 ppm
         printf("%.8f ", breath_voc_equivalent); //bVOCe ppm]
         printf("%.2f ", iaq); // IAQ
