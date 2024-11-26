@@ -8,26 +8,27 @@ const port = 3000;
 const client = redis.createClient();
 client.connect().catch(console.error);
 
+// Ключи для чтения из Redis
+const keys = [
+    'temperature',
+    'raw_temperature',
+    'humidity',
+    'raw_humidity',
+    'pressure',
+    'gas',
+    'co2_equivalent',
+    'breath_voc_equivalent',
+    'iaq',
+    'static_iaq',
+    'iaq_accuracy',
+    'bsec_status',
+    'dyn_rad',
+    'stat_rad'
+];
+
 // Endpoint для получения данных из Redis
 app.get('/data', async (req, res) => {
     try {
-        const keys = [
-            'temperature',
-            'raw_temperature',
-            'humidity',
-            'raw_humidity',
-            'pressure',
-            'gas',
-            'co2_equivalent',
-            'breath_voc_equivalent',
-            'iaq',
-            'static_iaq',
-            'iaq_accuracy',
-            'bsec_status',
-            'dyn_rad',
-            'stat_rad'
-        ];
-
         const data = {};
         for (const key of keys) {
             data[key] = parseFloat(await client.get(key)) || 0;
@@ -65,7 +66,7 @@ app.get('/', (req, res) => {
     <style>
         .metrics {
             display: flex;
-            flex-direction: wrap;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
         }
