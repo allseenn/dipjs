@@ -141,8 +141,8 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.2f ", raw_humidity); /* % */
         printf("%.2f ", pressure / 100 * hectoPascal); /* hPa */
         printf("%.2f ", gas/1000); /* КOms */
-        printf("%.8f ", co2_equivalent); // eCO2 ppm
-        printf("%.8f ", breath_voc_equivalent); //bVOCe ppm]
+        printf("%.0f ", co2_equivalent); // eCO2 ppm
+        printf("%.2f ", breath_voc_equivalent); //bVOCe ppm]
         printf("%.2f ", iaq); // IAQ
         printf("%.2f ", static_iaq); // static IAQ
         printf("%.0f ", iaq_accuracy); // IAQ accuracy
