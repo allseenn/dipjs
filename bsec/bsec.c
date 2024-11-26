@@ -149,7 +149,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     reply = redisCommand(c, "SET breath_voc_equivalent %.2f", breath_voc_equivalent);
     reply = redisCommand(c, "SET iaq %.2f", iaq);
     reply = redisCommand(c, "SET static_iaq %.2f", static_iaq);
-    reply = redisCommand(c, "SET iaq_accuracy %.0f", iaq_accuracy)
+    reply = redisCommand(c, "SET iaq_accuracy %.0f", iaq_accuracy);
     reply = redisCommand(c, "SET bsec_status %.0f", bsec_status);
     redisFree(c);
 
