@@ -4,7 +4,7 @@ ARG=-lm -lrt -static -std=c99 -pedantic
 all: ${TARGET}
 
 ${TARGET}: ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a 
-	gcc ${ARG} -o ${TARGET} ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a -I/usr/include/hiredis -D_FILE_OFFSET_BITS=64  -L/usr/lib  -lhiredis 
+	gcc ${ARG} -o ${TARGET} ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a 
 	
 bsec_integration.o:
 	gcc -o bsec_integration.o -c bsec_integration.c
