@@ -17,6 +17,7 @@
 
 int g_i2cFid; // I2C Linux device handle
 int i2c_address = BME680_I2C_ADDR_PRIMARY;
+int i2c_radsense = 0x66
 char *filename_state = "/usr/local/sbin/bsec_iaq.state";
 char *filename_config = "/usr/local/sbin/bsec_iaq.config";
 float hectoPascal = 0.750063755419211;
@@ -42,6 +43,20 @@ void i2cSetAddress(int address)
         perror("i2cSetAddress");
         exit(1);
     }
+}
+
+int readI2CRegister(int file, int reg) {
+    if (ioctl(file, I2C_SLAVE, i2c_radsense) < 0) {
+        perror("Failed to set I2C slave address");
+        return -1;
+    }
+
+    if (i2c_smbus_write_byte(file, reg) < 0) {
+        perror("Failed to write I2C register address");
+        return -1;
+    }
+
+    return i2c_smbus_read_byte(file);
 }
 
 int8_t bus_write(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data_ptr,
@@ -106,8 +121,29 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float breath_voc_equivalent)
 {
     time_t t = time(NULL);
-    //struct tm tm = *localtime(&t);
+    int file;
+    int byte1, byte2, byte3;
+    int value;
+    float dinamic, static;
+
+    if ((file = open(I2C_BUS, O_RDWR)) < 0) {
+        perror("Failed to open I2C bus");
+        return 1;
+    }
+
+    byte1 = readI2CRegister(file, 0x03);
+    byte2 = readI2CRegister(file, 0x04);
+    byte3 = readI2CRegister(file, 0x05);
+    value = (byte1 << 16) | (byte2 << 8) | byte3;
+    dinamic = value * 0.1;
+
+    byte1 = readI2CRegister(file, 0x06);
+    byte2 = readI2CRegister(file, 0x07);
+    byte3 = readI2CRegister(file, 0x08);
+    value = (byte1 << 16) | (byte2 << 8) | byte3;
+    static = value * 0.1;
     if (once) {
+        printf("%lu", (unsigned long)t);
         printf("%.2f ", temperature); /* Celsius */
         printf("%.2f ", raw_temperature); /* Celsius */
         printf("%.2f ", humidity); /* % */
@@ -120,7 +156,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.2f ", static_iaq); // static IAQ
         printf("%.2f ", iaq_accuracy); // IAQ accuracy
         printf("%d ", bsec_status);
-        printf("%lu", (unsigned long)t);
+        printf("%.1f %.1fn", dinamic, static);
         printf("\r\n");
         fflush(stdout);
     }
