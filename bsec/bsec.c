@@ -107,24 +107,23 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    printf("%.2f ", temperature); /* Celsius */
-    printf("%.2f ", raw_temperature); /* Celsius */
-    printf("%.2f ", humidity); /* % */
-    printf("%.2f ", raw_humidity); /* % */
-    printf("%.2f ", pressure / 100 * hectoPascal); /* hPa */
-    printf("%.f ", gas/1000); /* КOms */
-    printf("%.8f ", co2_equivalent); // eCO2 ppm
-    printf("%.8f ", breath_voc_equivalent); //bVOCe ppm]
-    printf("%.2f ", iaq); // IAQ
-    printf("%.2f ", static_iaq); // static IAQ
-    printf("%.2f ", iaq_accuracy); // IAQ accuracy
-    printf("%d ", bsec_status);
-    printf("%" PRId64, timestamp);
-    printf("\r\n");
-    fflush(stdout);
     if (once) {
-        i2cClose();
-        exit(0);
+        printf("%d", tm);
+        printf("%.2f ", temperature); /* Celsius */
+        printf("%.2f ", raw_temperature); /* Celsius */
+        printf("%.2f ", humidity); /* % */
+        printf("%.2f ", raw_humidity); /* % */
+        printf("%.2f ", pressure / 100 * hectoPascal); /* hPa */
+        printf("%.f ", gas/1000); /* КOms */
+        printf("%.8f ", co2_equivalent); // eCO2 ppm
+        printf("%.8f ", breath_voc_equivalent); //bVOCe ppm]
+        printf("%.2f ", iaq); // IAQ
+        printf("%.2f ", static_iaq); // static IAQ
+        printf("%.2f ", iaq_accuracy); // IAQ accuracy
+        printf("%d ", bsec_status);
+        printf("%" PRId64, timestamp);
+        printf("\r\n");
+        fflush(stdout);
     }
 }
 
