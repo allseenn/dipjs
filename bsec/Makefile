@@ -1,10 +1,10 @@
 TARGET=bsec
-ARG=-lm -lrt -static -std=c99 -pedantic
+ARG=-lm -lrt -static -std=c99 -pedantic -I/usr/include/hiredis /usr/lib/libhiredis.so -D_FILE_OFFSET_BITS=64 -lhiredis
 
 all: ${TARGET}
 
 ${TARGET}: ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a 
-	gcc ${ARG} -o ${TARGET} ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a -I/usr/include/hiredis -D_FILE_OFFSET_BITS=64 
+	gcc ${ARG} -o ${TARGET} ${TARGET}.o bsec_integration.o bme680.o libalgobsec.a 
 	
 bsec_integration.o:
 	gcc -o bsec_integration.o -c bsec_integration.c
@@ -13,7 +13,7 @@ bme680.o:
 	gcc -o bme680.o -c bme680.c
 
 ${TARGET}.o: ${TARGET}.c
-	gcc -I/usr/include/hiredis -D_FILE_OFFSET_BITS=64 -o ${TARGET}.o -c ${TARGET}.c 
+	gcc {$ARG} -o ${TARGET}.o -c ${TARGET}.c 
 
 install:
 	chmod 777 ${TARGET}
