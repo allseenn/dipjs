@@ -9,7 +9,6 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 #include "bsec_integration.h"
 #define DESTZONE "TZ=Europe/Moscow"
@@ -18,7 +17,6 @@
 
 int g_i2cFid; // I2C Linux device handle
 int i2c_address = BME680_I2C_ADDR_PRIMARY;
-int i2c_radsense = 0x66;
 char *filename_state = "/usr/local/sbin/bsec_iaq.state";
 char *filename_config = "/usr/local/sbin/bsec_iaq.config";
 float hectoPascal = 0.750063755419211;
@@ -44,20 +42,6 @@ void i2cSetAddress(int address)
         perror("i2cSetAddress");
         exit(1);
     }
-}
-
-int readI2CRegister(int file, int reg) {
-    if (ioctl(file, I2C_SLAVE, i2c_radsense) < 0) {
-        perror("Failed to set I2C slave address");
-        return -1;
-    }
-
-    if (i2c_smbus_write_byte(file, reg) < 0) {
-        perror("Failed to write I2C register address");
-        return -1;
-    }
-
-    return i2c_smbus_read_byte(file);
 }
 
 int8_t bus_write(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data_ptr,
@@ -122,28 +106,16 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float breath_voc_equivalent)
 {
     time_t t = time(NULL);
-    int file;
-    int byte1, byte2, byte3;
-    int value;
-    float dinamic;
-    float static;
 
-    if ((file = open(g_i2cFid, O_RDWR)) < 0) {
-        perror("Failed to open I2C bus");
-        return 1;
-    }
+    char command[1024];
+    char buffer[1024];
+    sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.f %.8f %.8f %.2f %.2f %.2f %d",
+            temperature, raw_temperature, humidity, raw_humidity,
+            pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
+            breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
+    sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
+    system(command);
 
-    byte1 = readI2CRegister(file, 0x03);
-    byte2 = readI2CRegister(file, 0x04);
-    byte3 = readI2CRegister(file, 0x05);
-    value = (byte1 << 16) | (byte2 << 8) | byte3;
-    dinamic = value * 0.1;
-
-    byte1 = readI2CRegister(file, 0x06);
-    byte2 = readI2CRegister(file, 0x07);
-    byte3 = readI2CRegister(file, 0x08);
-    value = (byte1 << 16) | (byte2 << 8) | byte3;
-    static = value * 0.1;
     if (once) {
         printf("%lu", (unsigned long)t);
         printf("%.2f ", temperature); /* Celsius */
@@ -158,7 +130,6 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.2f ", static_iaq); // static IAQ
         printf("%.2f ", iaq_accuracy); // IAQ accuracy
         printf("%d ", bsec_status);
-        printf("%.1f %.1fn", dinamic, static);
         printf("\r\n");
         fflush(stdout);
     }
