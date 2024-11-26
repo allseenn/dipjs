@@ -133,7 +133,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 
     // Закрываем временный файловый дескриптор
     close(dev_null);
-    
+
     redisContext *c = redisConnect("127.0.0.1", 6379);
     redisReply *reply;
     reply = redisCommand(c, "SET timestamp %lu", t);
@@ -150,7 +150,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     reply = redisCommand(c, "SET iaq %.2f", iaq);
     reply = redisCommand(c, "SET static_iaq %.2f", static_iaq);
     reply = redisCommand(c, "SET iaq_accuracy %.0f", iaq_accuracy)
-    reply = redisCommand(c, "SET bsec_status %.0f", bsec_status)
+    reply = redisCommand(c, "SET bsec_status %.0f", bsec_status);
     redisFree(c);
 
     if (once) {
