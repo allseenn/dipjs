@@ -113,6 +113,10 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
             temperature, raw_temperature, humidity, raw_humidity,
             pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
             breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
+
+    char status_str[20]; // Создаем буфер для преобразования целочисленного значения в строку
+    sprintf(status_str, "%d", bsec_status); // Преобразуем целочисленное значение в строку
+
     sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
     system(command);
 
