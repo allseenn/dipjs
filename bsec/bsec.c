@@ -108,7 +108,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     time_t t = time(NULL);
     //struct tm tm = *localtime(&t);
     if (once) {
-        printf("%ld", t);
+        printf("%ld", (long)t);
         printf("%.2f ", temperature); /* Celsius */
         printf("%.2f ", raw_temperature); /* Celsius */
         printf("%.2f ", humidity); /* % */
