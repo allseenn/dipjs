@@ -1,5 +1,5 @@
 TARGET=bsec
-ARG=-lm -lrt -static -std=c99 -pedantic -I/usr/include/hiredis -L/usr/lib -D_FILE_OFFSET_BITS=64 -lhiredis
+ARG=-lm -lrt -static -std=c99 -pedantic -I/usr/include/hiredis  -D_FILE_OFFSET_BITS=64 -L/usr/lib -lhiredis
 
 all: ${TARGET}
 
@@ -13,7 +13,7 @@ bme680.o:
 	gcc -o bme680.o -c bme680.c
 
 ${TARGET}.o: ${TARGET}.c
-	gcc ${$ARG} -o ${TARGET}.o -c ${TARGET}.c 
+	gcc ${ARG} -o ${TARGET}.o -c ${TARGET}.c 
 
 install:
 	chmod 777 ${TARGET}
