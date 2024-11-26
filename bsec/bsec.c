@@ -109,14 +109,10 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 
     char command[1024];
     char buffer[1024];
-    sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %d",
+    sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.0f",
             temperature, raw_temperature, humidity, raw_humidity,
             pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
             breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
-
-    char status_str[20]; // Создаем буфер для преобразования целочисленного значения в строку
-    sprintf(status_str, "%d", bsec_status); // Преобразуем целочисленное значение в строку
-
     sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
     system(command);
 
@@ -132,8 +128,8 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.8f ", breath_voc_equivalent); //bVOCe ppm]
         printf("%.2f ", iaq); // IAQ
         printf("%.2f ", static_iaq); // static IAQ
-        printf("%.2f ", iaq_accuracy); // IAQ accuracy
-        printf("%d ", bsec_status);
+        printf("%.0f ", iaq_accuracy); // IAQ accuracy
+        printf("%.0f ", bsec_status);
         printf("\r\n");
         fflush(stdout);
     }
