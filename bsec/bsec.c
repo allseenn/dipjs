@@ -108,7 +108,6 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     time_t t = time(NULL);
     //struct tm tm = *localtime(&t);
     if (once) {
-        printf("%ld", (long)t);
         printf("%.2f ", temperature); /* Celsius */
         printf("%.2f ", raw_temperature); /* Celsius */
         printf("%.2f ", humidity); /* % */
@@ -121,7 +120,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.2f ", static_iaq); // static IAQ
         printf("%.2f ", iaq_accuracy); // IAQ accuracy
         printf("%d ", bsec_status);
-        printf("%" PRId64, timestamp);
+        printf("%lu", (unsigned long)t);
         printf("\r\n");
         fflush(stdout);
     }
