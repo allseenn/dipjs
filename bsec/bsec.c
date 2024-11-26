@@ -126,7 +126,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     dup2(dev_null, fileno(stdout));
 
     // Выполняем команду
-    system(command);
+    //system(command);
 
     // Восстанавливаем стандартный вывод
     dup2(saved_stdout, fileno(stdout));
