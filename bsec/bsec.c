@@ -124,9 +124,10 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     int file;
     int byte1, byte2, byte3;
     int value;
-    float dinamic, static;
+    float dinamic;
+    float static;
 
-    if ((file = open(I2C_BUS, O_RDWR)) < 0) {
+    if ((file = open(g_i2cFid, O_RDWR)) < 0) {
         perror("Failed to open I2C bus");
         return 1;
     }
