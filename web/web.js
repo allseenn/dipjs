@@ -1,6 +1,6 @@
 const express = require('express');
 const redis = require('redis');
-import { fetchWeatherApi } from 'openmeteo';
+const fetch = require('node-fetch'); // Для запросов Open-Meteo
 
 const app = express();
 const port = 3000;
@@ -206,7 +206,7 @@ app.get('/', (req, res) => {
                 <div class="card-body">
                     <h5 class="card-title">Атмосферное давление</h5>
                     <p class="card-text display-5" id="press">--</p>
-                    <p class="text-muted">mmHg</p>
+                    <p class="text-muted">мм.рт.ст.</p>
                 </div>
             </div>
             <div class="card text-center" id="card6">
@@ -241,7 +241,7 @@ app.get('/', (req, res) => {
     </div>
 </body>
 </html>
-    `);
+`);
 });
 
 // Запуск сервера
