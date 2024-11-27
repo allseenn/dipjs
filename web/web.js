@@ -8,8 +8,8 @@ const port = 3000;
 const client = redis.createClient();
 client.connect().catch(console.error);
 
-// Ключи для чтения из Redis
-const keys = [
+// Ключи для чтения из Rediska
+const keys = [ 
     'temperature',
     'raw_temperature',
     'humidity',
