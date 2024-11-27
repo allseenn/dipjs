@@ -51,6 +51,17 @@ app.get('/', (req, res) => {
     <title>ODROID: WEB-MET</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;  
+        align-items: center;      
+        height: 100%;            
+        }
+
+        .card-text {
+            margin: 0;               
+        }
         .card {
             cursor: grab;
             user-select: none;
