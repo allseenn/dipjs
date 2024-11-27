@@ -123,14 +123,14 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     
     time_t t = time(NULL);
 
-    char command[1024];
-    char buffer[1024];
-    sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.0f",
-            temperature, raw_temperature, humidity, raw_humidity,
-            pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
-            breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, '\0');
+    // char command[1024];
+    // char buffer[1024];
+    // sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.0f",
+    //         temperature, raw_temperature, humidity, raw_humidity,
+    //         pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
+    //         breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, '\0');
 
-    sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
+    // sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
 
 
     float pressure_hpa = pressure / 100 * hectoPascal;
