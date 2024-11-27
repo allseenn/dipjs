@@ -136,21 +136,26 @@ app.get('/', (req, res) => {
         }
         setInterval(updateData, 3000);
 
-        async function fetchWeather() {
+async function fetchWeather() {
     try {
         const response = await fetch('https://wttr.in/Moscow?format=%C+%t');
         const weather = await response.text(); // Получаем текстовую информацию о погоде
-        document.getElementById('weather-temp').textContent = weather;
+        
+        // Разделяем текст на описание и температуру
+        const weatherParts = weather.split(' ');
+        const description = weatherParts.slice(0, -1).join(' '); // Описание погоды
+        const temperature = weatherParts[weatherParts.length - 1]; // Температура
+
+        // Обновляем элементы на странице
+        document.getElementById('weather-desc').textContent = description; // Выводим описание в заголовок
+        document.getElementById('weather-temp').textContent = temperature; // Выводим температуру в основной текст
     } catch (error) {
         console.error('Error fetching weather data:', error);
+        document.getElementById('weather-desc').textContent = 'Ошибка';
         document.getElementById('weather-temp').textContent = 'N/A';
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchWeather();
-    setInterval(fetchWeather, 900000); // обновление каждые 15 минут
-});
 
     </script>
 </head>
@@ -256,13 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="text-muted">μR/h</p>
                 </div>
             </div>
-                    <div class="card text-center" id="weather-card">
-                <div class="card-body">
-                    <h5 class="card-title">Погода</h5>
-                    <p class="card-text display-5" id="weather-temp">--°C</p>
-                    <p class="text-muted" id="weather-time">--</p>
-                </div>
-            </div>
+<div class="card text-center" id="weather-card">
+    <div class="card-body">
+        <!-- В заголовке будет описание погоды -->
+        <h5 class="card-title" id="weather-desc">--</h5>
+        <p class="card-text display-5" id="weather-temp">--°C</p> <!-- Температура останется здесь -->
+    </div>
+</div>
+
         </div>
     </div>
 </body>
