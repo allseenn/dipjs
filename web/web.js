@@ -48,14 +48,7 @@ app.get('/', (req, res) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ODROID: WEB-MET</title>
-    <style>
-        .metrics {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script>
         function updateData() {
             fetch('/data')
@@ -81,52 +74,59 @@ app.get('/', (req, res) => {
         setInterval(updateData, 3000);
     </script>
 </head>
-<body onload="updateData()">
-    <h1>ODROID: WEB-MET</h1>
-    <section class="metrics">
-        <div class="temp">&#127777;
-            <p id="temp"></p> C&deg;
+<body onload="updateData()" class="bg-light">
+    <div class="container my-4">
+        <h1 class="text-center mb-4">ODROID: WEB-MET</h1>
+        <div class="row g-3">
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Temperature</h5>
+                        <p class="card-text display-5" id="temp">--</p>
+                        <p class="text-muted">C°</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Raw Temperature</h5>
+                        <p class="card-text display-5" id="raw_temp">--</p>
+                        <p class="text-muted">C°</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Humidity</h5>
+                        <p class="card-text display-5" id="humidity">--</p>
+                        <p class="text-muted">%</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Дополнительные карточки -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Raw Humidity</h5>
+                        <p class="card-text display-5" id="raw_hum">--</p>
+                        <p class="text-muted">%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Pressure</h5>
+                        <p class="card-text display-5" id="press">--</p>
+                        <p class="text-muted">mmHg</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Пример для других параметров -->
         </div>
-        <div class="raw_temp">&#127777;<sub>raw</sub>
-            <p id="raw_temp"></p> C&deg;
-        </div>
-        <div class="humidity">&#128167;
-            <p id="humidity"></p> &percnt;
-        </div>
-        <div class="raw_hum">&#128167;<sub>raw</sub>
-            <p id="raw_hum"></p> &percnt;
-        </div>
-        <div class="press">&#128137;
-            <p id="press"></p> mmHg
-        </div>
-        <div class="gas">&#128067;
-            <p id="gas"></p> K&ohm;
-        </div>
-        <div class="ecCO2">CO<sub>2</sub>
-            <p id="ecCO2"></p> ppm
-        </div>
-        <div class="bVOC">VOC
-            <p id="bVOC"></p> ppm
-        </div>
-        <div class="IAQ">&#128663;
-            <p id="IAQ"></p> IAQ
-        </div>
-        <div class="SIAQ">&#127968;
-            <p id="SIAQ"></p> S-IAQ
-        </div>
-        <div class="IAQ_ACC">&#9878;
-            <p id="IAQ_ACC"></p>QoS
-        </div>
-        <div class="status">&#128681;
-            <p id="status"></p> ERR
-        </div>
-        <div class="rad_dyn">&#9762;&#128663;
-            <p id="rad_dyn"></p> &mu;R/h
-        </div>
-        <div class="rad_stat">&#9762;&#127968;
-            <p id="rad_stat"></p> &mu;R/h
-        </div>
-    </section>
+    </div>
 </body>
 </html>`);
 });
