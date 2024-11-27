@@ -108,35 +108,41 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float breath_voc_equivalent)
 {
  
-    int byte1;
-    FILE *fp = popen("i2cget -y 1 0x66 0x03", "r");
-    fscanf(fp, "%2x", &byte1);
+    float rad_dyn;
+    float rad_stat;
+    FILE *fp = popen("rad.sh", "r");
+    fscanf(fp, "%.f %.f", &rad_dyn, &rad_stat);
     pclose(fp);
-    int byte2;
-    fp = popen("i2cget -y 1 0x66 0x04", "r");
-    fscanf(fp, "%2x", &byte2);
-    pclose(fp);
-    int byte3;
-    fp = popen("i2cget -y 1 0x66 0x05", "r");
-    fscanf(fp, "%2x", &byte3);
-    pclose(fp);
-    uint32_t value = (byte1 << 16) | (byte2 << 8) | byte3;
-    float rad_dyn = (float)value / 10.0f;
 
-    byte1;
-    fp = popen("i2cget -y 1 0x66 0x06", "r");
-    fscanf(fp, "%2x", &byte1);
-    pclose(fp);
-    byte2;
-    fp = popen("i2cget -y 1 0x66 0x07", "r");
-    fscanf(fp, "%2x", &byte2);
-    pclose(fp);
-    byte3;
-    fp = popen("i2cget -y 1 0x66 0x08", "r");
-    fscanf(fp, "%2x", &byte3);
-    pclose(fp);
-    value = (byte1 << 16) | (byte2 << 8) | byte3;
-    float rad_stat = (float)value / 10.0f;
+    // int byte1;
+    // FILE *fp = popen("i2cget -y 1 0x66 0x03", "r");
+    // fscanf(fp, "%2x", &byte1);
+    // pclose(fp);
+    // int byte2;
+    // fp = popen("i2cget -y 1 0x66 0x04", "r");
+    // fscanf(fp, "%2x", &byte2);
+    // pclose(fp);
+    // int byte3;
+    // fp = popen("i2cget -y 1 0x66 0x05", "r");
+    // fscanf(fp, "%2x", &byte3);
+    // pclose(fp);
+    // uint32_t value = (byte1 << 16) | (byte2 << 8) | byte3;
+    // float rad_dyn = (float)value / 10.0f;
+
+    // byte1;
+    // fp = popen("i2cget -y 1 0x66 0x06", "r");
+    // fscanf(fp, "%2x", &byte1);
+    // pclose(fp);
+    // byte2;
+    // fp = popen("i2cget -y 1 0x66 0x07", "r");
+    // fscanf(fp, "%2x", &byte2);
+    // pclose(fp);
+    // byte3;
+    // fp = popen("i2cget -y 1 0x66 0x08", "r");
+    // fscanf(fp, "%2x", &byte3);
+    // pclose(fp);
+    // value = (byte1 << 16) | (byte2 << 8) | byte3;
+    // float rad_stat = (float)value / 10.0f;
 
     time_t t = time(NULL);
     float pressure_hpa = pressure / 100 * hectoPascal;
