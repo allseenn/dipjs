@@ -167,7 +167,6 @@ app.get('/', (req, res) => {
             setInterval(fetchWeather, 900000); // 15 минут
         });
     </script>
-    </script>
 </head>
 <body onload="updateData()" class="bg-light">
     <div class="container my-4">
