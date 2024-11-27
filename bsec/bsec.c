@@ -130,10 +130,10 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     uint8_t byte3 = i2c_smbus_read_byte_data(file, 0x05);
     uint32_t value = (byte1 << 16) | (byte2 << 8) | byte3;
     float rad_dyn = value * 0.1f;
-    uint8_t byte1 = i2c_smbus_read_byte_data(file, 0x06);
-    uint8_t byte2 = i2c_smbus_read_byte_data(file, 0x07);
-    uint8_t byte3 = i2c_smbus_read_byte_data(file, 0x08);
-    uint32_t value = (byte1 << 16) | (byte2 << 8) | byte3;
+    byte1 = i2c_smbus_read_byte_data(file, 0x06);
+    byte2 = i2c_smbus_read_byte_data(file, 0x07);
+    byte3 = i2c_smbus_read_byte_data(file, 0x08);
+    value = (byte1 << 16) | (byte2 << 8) | byte3;
     float rad_stat = value * 0.1f;
     close(file);
     
