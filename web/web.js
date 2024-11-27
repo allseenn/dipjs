@@ -124,7 +124,88 @@ app.get('/', (req, res) => {
                     </div>
                 </div>
             </div>
-            <!-- Пример для других параметров -->
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">gas</h5>
+                        <p class="card-text display-5" id="gas">--</p>
+                        <p class="text-muted">K&ohm;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">ecCO2</h5>
+                        <p class="card-text display-5" id="ecCO2">--</p>
+                        <p class="text-muted">ppm</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">bVOC</h5>
+                        <p class="card-text display-5" id="bVOC">--</p>
+                        <p class="text-muted">ppm</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">IAQ</h5>
+                        <p class="card-text display-5" id="IAQ">--</p>
+                        <p class="text-muted">IAQ</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">SIAQ</h5>
+                        <p class="card-text display-5" id="SIAQ">--</p>
+                        <p class="text-muted">SIAQ</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">IAQ_ACC</h5>
+                        <p class="card-text display-5" id="IAQ_ACC">--</p>
+                        <p class="text-muted">IAQ_ACC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">status</h5>
+                        <p class="card-text display-5" id="status">--</p>
+                        <p class="text-muted">status</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">dyn_rad</h5>
+                        <p class="card-text display-5" id="dyn_rad">--</p>
+                        <p class="text-muted">dyn_rad</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">stat_rad</h5>
+                        <p class="card-text display-5" id="stat_rad">--</p>
+                        <p class="text-muted">stat_rad</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>
