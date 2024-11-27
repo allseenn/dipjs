@@ -14,15 +14,15 @@ app.get('/data', async (req, res) => {
         // Получаем элементы списка под ключом "0"
         const list = await client.lRange('0', 0, -1);
 
-        console.log(list);
+
 
         // Разбиваем строку значений (например: '23.50 25.00 55.00 ...') на массив
-        const values = list.split(' ').map(value => parseFloat(value));
+        //const values = list.split(' ').map(value => parseFloat(value));
 
         // структуруем данные в объект с нужными полями
         const [temperature, raw_temperature, humidity, raw_humidity, 
                 pressure, gas, co2_equivalent, breath_voc_equivalent, 
-                iaq, static_iaq, iaq_accuracy, bsec_status] = values;
+                iaq, static_iaq, iaq_accuracy, bsec_status] = list;
 
         const data = {
             temp: temperature,
