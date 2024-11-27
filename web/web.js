@@ -148,14 +148,14 @@ app.get('/', (req, res) => {
         setInterval(updateData, 3000);
 
         async function fetchWeather() {
-    try {
-        const response = await fetch('https://wttr.in/Moscow?format=%t');
-        const weather = await response.text(); // Получаем текстовую информацию о погоде
-        document.getElementById('weather-temp').textContent = weather;
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
-        document.getElementById('weather-temp').textContent = 'N/A';
-    }
+        try {
+            const response = await fetch('https://wttr.in/Moscow?format=%t');
+            const weather = await response.text().replace(, '°C'); // Получаем текстовую информацию о погоде
+            document.getElementById('weather-temp').textContent = weather;
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+            document.getElementById('weather-temp').textContent = 'N/A';
+        }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
