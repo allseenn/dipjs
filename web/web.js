@@ -140,15 +140,16 @@ async function fetchWeather() {
     try {
         const response = await fetch('https://wttr.in/Moscow?format=%C+%t');
         const weather = await response.text(); // Получаем текстовую информацию о погоде
-        
+
         // Разделяем текст на описание и температуру
         const weatherParts = weather.split(' ');
-        const description = weatherParts.slice(0, -1).join(' '); // Описание погоды
-        const temperature = weatherParts[weatherParts.length - 1]; // Температура
+
+        const description = weatherParts.slice(0, -1).join(' '); // Все, что до последнего слова - это описание погоды
+        const temperature = weatherParts[weatherParts.length - 1]; // Последнее слово - это температура
 
         // Обновляем элементы на странице
-        document.getElementById('weather-desc').textContent = description; // Выводим описание в заголовок
-        document.getElementById('weather-temp').textContent = temperature; // Выводим температуру в основной текст
+        document.getElementById('weather-desc').textContent = description; // Описание погоды
+        document.getElementById('weather-temp').textContent = temperature; // Температура
     } catch (error) {
         console.error('Error fetching weather data:', error);
         document.getElementById('weather-desc').textContent = 'Ошибка';
