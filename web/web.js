@@ -27,7 +27,10 @@ app.get('/data', async (req, res) => {
             IAQ: parseFloat(list[8]),
             SIAQ: parseFloat(list[9]),
             IAQ_ACC: parseInt(list[10], 10),
-            status: parseInt(list[11], 10)
+            status: parseInt(list[11], 10),
+            rad_dyn: parseFloat(list[12]),
+            rad_stat: parseInt(list[13], 10)
+            
         };
 
         // Возвращаем данные в формате JSON
@@ -71,6 +74,8 @@ app.get('/', (req, res) => {
                     document.getElementById('SIAQ').textContent = data.SIAQ.toFixed(0);
                     document.getElementById('IAQ_ACC').textContent = data.IAQ_ACC.toFixed(0);
                     document.getElementById('status').textContent = data.status.toFixed(0);
+                    document.getElementById('rad_dyn').textContent = data.rad_dyn.toFixed(1);
+                    document.getElementById('rad_stat').textContent = data.rad_stat.toFixed(0);
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
@@ -115,6 +120,12 @@ app.get('/', (req, res) => {
         </div>
         <div class="status">&#128681;
             <p id="status"></p> int
+        </div>
+        <div class="rad_dyn">&#128263;
+            <p id="rad_dyn"></p> W/m&sup2;
+        </div>
+        <div class="rad_stat">&#128263;<sub>stat</sub>
+            <p id="rad_stat"></p> W/m&sup2;
         </div>
     </section>
 </body>
