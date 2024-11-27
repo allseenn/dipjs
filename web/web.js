@@ -136,7 +136,8 @@ app.get('/', (req, res) => {
                 .catch(error => console.error('Error fetching data:', error));
         }
         setInterval(updateData, 3000);
-                // Helper function to update Open-Meteo weather data
+
+        // Helper function to update Open-Meteo weather data
         async function fetchWeather() {
             const url = "https://api.open-meteo.com/v1/forecast";
             const params = {
@@ -161,7 +162,8 @@ app.get('/', (req, res) => {
                 document.getElementById('weather-time').textContent = 'Error';
             }
         }
-                    // Initialize weather fetch on page load and update every 15 minutes
+
+        // Initialize weather fetch on page load and update every 15 minutes
         document.addEventListener('DOMContentLoaded', () => {
             fetchWeather();
             setInterval(fetchWeather, 900000); // 15 минут
@@ -209,82 +211,40 @@ app.get('/', (req, res) => {
             </div>
             <div class="card text-center" id="card6">
                 <div class="card-body">
-                    <h5 class="card-title">Электрическое сопротивление воздуха</h5>
+                    <h5 class="card-title">Концентрация газа</h5>
                     <p class="card-text display-5" id="gas">--</p>
-                    <p class="text-muted">K&ohm;</p>
+                    <p class="text-muted">кОм</p>
                 </div>
             </div>
             <div class="card text-center" id="card7">
                 <div class="card-body">
-                    <h5 class="card-title">Эквивалентная концентрация CO<sub>2</sub> в воздух</h5>
+                    <h5 class="card-title">Концентрация углекислого газа (eCO2)</h5>
                     <p class="card-text display-5" id="ecCO2">--</p>
                     <p class="text-muted">ppm</p>
                 </div>
             </div>
             <div class="card text-center" id="card8">
                 <div class="card-body">
-                    <h5 class="card-title">Концентрация летучих органических веществ</h5>
+                    <h5 class="card-title">Концентрация летучих органических соединений</h5>
                     <p class="card-text display-5" id="bVOC">--</p>
                     <p class="text-muted">ppm</p>
                 </div>
             </div>
-            <div class="card text-center" id="card9">
-                <div class="card-body">
-                    <h5 class="card-title">Динамический индекс качества воздуха</h5>
-                    <p class="card-text display-5" id="IAQ">--</p>
-                    <p class="text-muted">D-IAQ</p>
-                </div>
-            </div>
-            <div class="card text-center" id="card10">
-                <div class="card-body">
-                    <h5 class="card-title">Статический индекс качества воздуха</h5>
-                    <p class="card-text display-5" id="SIAQ">--</p>
-                    <p class="text-muted">S-IAQ</p>
-                </div>
-            </div>
-            <div class="card text-center" id="card11">
-                <div class="card-body">
-                    <h5 class="card-title">Точность индекса качества воздуха</h5>
-                    <p class="card-text display-5" id="IAQ_ACC">--</p>
-                    <p class="text-muted">QoS</p>
-                </div>
-            </div>
-            <div class="card text-center" id="card12">
-                <div class="card-body">
-                    <h5 class="card-title">Ошибки работы воздушного датчика</h5>
-                    <p class="card-text display-5" id="status">--</p>
-                    <p class="text-muted">CODE</p>
-                </div>
-            </div>
-            <div class="card text-center" id="card13">
-                <div class="card-body">
-                    <h5 class="card-title">Динамический уровень радиации</h5>
-                    <p class="card-text display-5" id="rad_dyn">--</p>
-                    <p class="text-muted">μR/h</p>
-                </div>
-            </div>
-            <div class="card text-center" id="card14">
-                <div class="card-body">
-                    <h5 class="card-title">Статический уровень радиации</h5>
-                    <p class="card-text display-5" id="rad_stat">--</p>
-                    <p class="text-muted">μR/h</p>
-                </div>
-            </div>
-            <!-- Weather Block -->
-            <div class="card text-center" id="weather-card">
-                <div class="card-body">
-                    <h5 class="card-title">Погода</h5>
-                    <p class="card-text display-5" id="weather-temp">--°C</p>
-                    <p class="text-muted" id="weather-time">--</p>
-                </div>
+        </div>
+        <div class="card text-center" id="weather-card">
+            <div class="card-body">
+                <h5 class="card-title">Погода</h5>
+                <p class="card-text display-5" id="weather-temp">--</p>
+                <p class="text-muted" id="weather-time">--</p>
             </div>
         </div>
     </div>
 </body>
 </html>
-`);
+    `);
 });
 
+// Запуск сервера
 app.listen(port, () => {
-    console.log(`Server running at http://192.168.1.42:${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });
