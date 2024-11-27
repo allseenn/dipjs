@@ -20,19 +20,19 @@ app.get('/data', async (req, res) => {
         //const values = list.split(' ').map(value => parseFloat(value));
 
         // структуруем данные в объект с нужными полями
-        const [temperature, raw_temperature, humidity, raw_humidity, 
-                pressure, gas, co2_equivalent, breath_voc_equivalent, 
-                iaq, static_iaq, iaq_accuracy, bsec_status] = list;
+        // const [temperature, raw_temperature, humidity, raw_humidity, 
+        //         pressure, gas, co2_equivalent, breath_voc_equivalent, 
+        //         iaq, static_iaq, iaq_accuracy, bsec_status] = list;
 
         const data = {
-            temp: temperature,
-            raw_temp: raw_temperature,
-            humidity: humidity,
-            raw_hum: raw_humidity,
-            press: pressure,
-            gas: gas,
-            ecCO2: co2_equivalent,
-            bVOC: breath_voc_equivalent,
+            temp: list[0],
+            raw_temp: list[1],
+            humidity: list[2],
+            raw_hum: list[3],
+            press: list[4],
+            gas: list[5],
+            ecCO2: list[6],
+            bVOC: list[7],
             IAQ: iaq,
             SIAQ: static_iaq,
             IAQ_ACC: iaq_accuracy,
