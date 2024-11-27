@@ -109,23 +109,23 @@ app.get('/', (req, res) => {
         <div class="bVOC">VOC
             <p id="bVOC"></p> ppm
         </div>
-        <div class="IAQ">&#128663;<sub>IAQ</sub>
-            <p id="IAQ"></p> int
+        <div class="IAQ">&#128663;
+            <p id="IAQ"></p> IAQ
         </div>
-        <div class="SIAQ">&#127968;<sub>IAQ</sub>
-            <p id="SIAQ"></p> int
+        <div class="SIAQ">&#127968;
+            <p id="SIAQ"></p> S-IAQ
         </div>
-        <div class="IAQ_ACC">&#9878;<sub>IAQ</sub>
-            <p id="IAQ_ACC"></p> int
+        <div class="IAQ_ACC">&#9878;
+            <p id="IAQ_ACC"></p>accuracy
         </div>
         <div class="status">&#128681;
             <p id="status"></p> int
         </div>
-        <div class="rad_dyn">&#128263;
-            <p id="rad_dyn"></p> W/m&sup2;
+        <div class="rad_dyn">&#9762;&#128663;
+            <p id="rad_dyn"></p> &mu;R/h
         </div>
-        <div class="rad_stat">&#128263;<sub>stat</sub>
-            <p id="rad_stat"></p> W/m&sup2;
+        <div class="rad_stat">&#9762;&#127968;
+            <p id="rad_stat"></p> &mu;R/h
         </div>
     </section>
 </body>
