@@ -1,5 +1,5 @@
 TARGET=bsec
-ARG=-lm -lrt -std=c99 -pedantic -I/usr/include/hiredis /usr/lib/libhiredis.so -D_FILE_OFFSET_BITS=64  -lhiredis
+ARG=-lm -lrt -li2c -std=c99 -pedantic -I/usr/include/hiredis /usr/lib/libhiredis.so -D_FILE_OFFSET_BITS=64  -lhiredis
 
 all: ${TARGET}
 

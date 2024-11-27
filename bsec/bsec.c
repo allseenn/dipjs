@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <linux/i2c-dev.h>
+#include <linux/i2c.h>
 #include <hiredis.h>
 #include "bsec_integration.h"
 #define DESTZONE "TZ=Europe/Moscow"
