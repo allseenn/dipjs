@@ -100,6 +100,21 @@ int64_t get_timestamp_us()
     return system_current_time_us;
 }
 
+int i2c_smbus_read_byte_data(int file, uint8_t command) {
+    union i2c_smbus_data data;
+    struct i2c_smbus_ioctl_data args = {
+        .read_write = I2C_SMBUS_READ,
+        .command = command,
+        .size = I2C_SMBUS_BYTE_DATA,
+        .data = &data
+    };
+    if (ioctl(file, I2C_SMBUS, &args) < 0) {
+        perror("I2C_SMBUS_READ_BYTE_DATA failed");
+        return -1;
+    }
+    return data.byte & 0xFF;
+}
+
 void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float temperature, float humidity, float pressure,
                   float raw_temperature, float raw_humidity, float gas,
