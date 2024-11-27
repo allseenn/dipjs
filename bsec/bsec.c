@@ -168,8 +168,8 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.2f ", static_iaq); // static IAQ
         printf("%.0f ", iaq_accuracy); // IAQ accuracy
         printf("%.0f ", bsec_status);
-        printf("%.0f ", rad_dyn); // IAQ accuracy
-        printf("%.0f ", rad_stat);
+        printf("%.1f ", rad_dyn); // IAQ accuracy
+        printf("%.1f ", rad_stat);
         printf("\r\n");
         fflush(stdout);
     }
