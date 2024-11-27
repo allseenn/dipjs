@@ -8,52 +8,47 @@ const port = 3000;
 const client = redis.createClient();
 client.connect().catch(console.error);
 
-// Ключи для чтения из Rediska
-const keys = [ 
-    'temperature',
-    'raw_temperature',
-    'humidity',
-    'raw_humidity',
-    'pressure',
-    'gas',
-    'co2_equivalent',
-    'breath_voc_equivalent',
-    'iaq',
-    'static_iaq',
-    'iaq_accuracy',
-    'bsec_status',
-    'dyn_rad',
-    'stat_rad'
-];
-
 // Endpoint для получения данных из Redis
 app.get('/data', async (req, res) => {
     try {
-        const data = {};
-        for (const key of keys) {
-            data[key] = parseFloat(await client.get(key)) || 0;
+        // Получаем элементы списка под ключом "0"
+        const list = await client.lRange('0', 0, -1);
+
+        // Проверяем, получили ли мы какие-либо значения
+        if (list.length === 0) {
+            return res.json({ message: 'No data available' });
         }
 
-        res.json({
-            temp: data.temperature,
-            raw_temp: data.raw_temperature,
-            humidity: data.humidity,
-            raw_hum: data.raw_humidity,
-            press: data.pressure,
-            gas: data.gas,
-            ecCO2: data.co2_equivalent,
-            bVOC: data.breath_voc_equivalent,
-            IAQ: data.iaq,
-            SIAQ: data.static_iaq,
-            IAQ_ACC: data.iaq_accuracy,
-            status: data.bsec_status,
-            dyn_rad: data.dyn_rad,
-            stat_rad: data.stat_rad
-        });
+        // Разбиваем строку значений (например: '23.50 25.00 55.00 ...') на массив
+        const values = list[0].split(' ').map(value => parseFloat(value));
+
+        // структуруем данные в объект с нужными полями
+        const [temperature, raw_temperature, humidity, raw_humidity, 
+                pressure, gas, co2_equivalent, breath_voc_equivalent, 
+                iaq, static_iaq, iaq_accuracy, bsec_status] = values;
+
+        const data = {
+            temp: temperature,
+            raw_temp: raw_temperature,
+            humidity: humidity,
+            raw_hum: raw_humidity,
+            press: pressure,
+            gas: gas,
+            ecCO2: co2_equivalent,
+            bVOC: breath_voc_equivalent,
+            IAQ: iaq,
+            SIAQ: static_iaq,
+            IAQ_ACC: iaq_accuracy,
+            status: bsec_status
+        };
+
+        // Возвращаем данные в формате JSON
+        res.json(data);
     } catch (err) {
+        console.error(err);
         res.status(500).send('Error retrieving data');
     }
-});
+})
 
 // Статический HTML контент
 app.get('/', (req, res) => {

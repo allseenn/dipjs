@@ -133,24 +133,13 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 
     // Закрываем временный файловый дескриптор
     close(dev_null);
+    float pressure_hpa = pressure / 100 * hectoPascal;
+    float gas_ohms = gas / 1000;
 
     redisContext *c = redisConnect("127.0.0.1", 6379);
-    redisReply *reply;
-    reply = redisCommand(c, "SET timestamp %lu", t);
-    reply = redisCommand(c, "SET temperature %.2f", temperature);
-    reply = redisCommand(c, "SET raw_temperature %.2f", raw_temperature);
-    reply = redisCommand(c, "SET humidity %.2f", humidity);
-    reply = redisCommand(c, "SET raw_humidity %.2f", raw_humidity);
-    float pressure_hpa = pressure / 100 * hectoPascal;
-    reply = redisCommand(c, "SET pressure %.2f", pressure_hpa);
-    float gas_ohms = gas / 1000;
-    reply = redisCommand(c, "SET gas %.2f", gas_ohms);
-    reply = redisCommand(c, "SET co2_equivalent %.2f", co2_equivalent);
-    reply = redisCommand(c, "SET breath_voc_equivalent %.2f", breath_voc_equivalent);
-    reply = redisCommand(c, "SET iaq %.2f", iaq);
-    reply = redisCommand(c, "SET static_iaq %.2f", static_iaq);
-    reply = redisCommand(c, "SET iaq_accuracy %.0f", iaq_accuracy);
-    reply = redisCommand(c, "SET bsec_status %.0f", bsec_status);
+    redisCommand(c, "DEL 0");
+    redisCommand(c, "LPUSH 0 '%.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f'", t, temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
+    redisCommand(c, "LPUSH %lu '%.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f'", t, temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
     redisFree(c);
 
     if (once) {
