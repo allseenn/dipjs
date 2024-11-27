@@ -111,7 +111,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     float rad_dyn;
     float rad_stat;
     FILE *fp = popen("rad.sh", "r");
-    fscanf(fp, "%.f %.f", &rad_dyn, &rad_stat);
+    fscanf(fp, "%f %f", &rad_dyn, &rad_stat);
     pclose(fp);
 
     // int byte1;
