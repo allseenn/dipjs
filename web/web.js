@@ -1,5 +1,6 @@
 const express = require('express');
 const redis = require('redis');
+import { fetchWeatherApi } from 'openmeteo';
 
 const app = express();
 const port = 3000;
@@ -135,6 +136,37 @@ app.get('/', (req, res) => {
                 .catch(error => console.error('Error fetching data:', error));
         }
         setInterval(updateData, 3000);
+                // Helper function to update Open-Meteo weather data
+        async function fetchWeather() {
+            const url = "https://api.open-meteo.com/v1/forecast";
+            const params = {
+                latitude: 55.8184,
+                longitude: 37.4122,
+                hourly: "temperature_2m",
+                timezone: "auto"
+            };
+
+            try {
+                const response = await fetch(`${url}?latitude=${params.latitude}&longitude=${params.longitude}&hourly=${params.hourly}&timezone=${params.timezone}`);
+                const data = await response.json();
+                const hourlyData = data.hourly;
+                const tempNow = hourlyData.temperature_2m[0]; // Берем текущую температуру
+                const timeNow = new Date(hourlyData.time[0]).toLocaleString(); // Преобразуем UTC время
+
+                document.getElementById('weather-temp').textContent = `${tempNow.toFixed(1)}°C`;
+                document.getElementById('weather-time').textContent = timeNow;
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                document.getElementById('weather-temp').textContent = 'N/A';
+                document.getElementById('weather-time').textContent = 'Error';
+            }
+        }
+                    // Initialize weather fetch on page load and update every 15 minutes
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchWeather();
+            setInterval(fetchWeather, 900000); // 15 минут
+        });
+    </script>
     </script>
 </head>
 <body onload="updateData()" class="bg-light">
@@ -201,21 +233,21 @@ app.get('/', (req, res) => {
                 <div class="card-body">
                     <h5 class="card-title">Динамический индекс качества воздуха</h5>
                     <p class="card-text display-5" id="IAQ">--</p>
-                    <p class="text-muted">IAQ</p>
+                    <p class="text-muted">D-IAQ</p>
                 </div>
             </div>
             <div class="card text-center" id="card10">
                 <div class="card-body">
                     <h5 class="card-title">Статический индекс качества воздуха</h5>
                     <p class="card-text display-5" id="SIAQ">--</p>
-                    <p class="text-muted">SIAQ</p>
+                    <p class="text-muted">S-IAQ</p>
                 </div>
             </div>
             <div class="card text-center" id="card11">
                 <div class="card-body">
                     <h5 class="card-title">Точность индекса качества воздуха</h5>
                     <p class="card-text display-5" id="IAQ_ACC">--</p>
-                    <p class="text-muted">IAQ_ACC</p>
+                    <p class="text-muted">QoS</p>
                 </div>
             </div>
             <div class="card text-center" id="card12">
@@ -237,6 +269,14 @@ app.get('/', (req, res) => {
                     <h5 class="card-title">Статический уровень радиации</h5>
                     <p class="card-text display-5" id="rad_stat">--</p>
                     <p class="text-muted">μR/h</p>
+                </div>
+            </div>
+            <!-- Weather Block -->
+            <div class="card text-center" id="weather-card">
+                <div class="card-body">
+                    <h5 class="card-title">Погода</h5>
+                    <p class="card-text display-5" id="weather-temp">--°C</p>
+                    <p class="text-muted" id="weather-time">--</p>
                 </div>
             </div>
         </div>
