@@ -115,10 +115,10 @@ app.get('/', (req, res) => {
             <p id="SIAQ"></p> S-IAQ
         </div>
         <div class="IAQ_ACC">&#9878;
-            <p id="IAQ_ACC"></p>QOS
+            <p id="IAQ_ACC"></p>QoS
         </div>
         <div class="status">&#128681;
-            <p id="status"></p> errors
+            <p id="status"></p> ERR
         </div>
         <div class="rad_dyn">&#9762;&#128663;
             <p id="rad_dyn"></p> &mu;R/h
