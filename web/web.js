@@ -14,29 +14,20 @@ app.get('/data', async (req, res) => {
         // Получаем элементы списка под ключом "0"
         const list = await client.lRange('0', 0, -1);
 
-
-        console.log(list[0]);
-        // Разбиваем строку значений (например: '23.50 25.00 55.00 ...') на массив
-        //const values = list.split(' ').map(value => parseFloat(value));
-
-        // структуруем данные в объект с нужными полями
-        // const [temperature, raw_temperature, humidity, raw_humidity, 
-        //         pressure, gas, co2_equivalent, breath_voc_equivalent, 
-        //         iaq, static_iaq, iaq_accuracy, bsec_status] = list;
-
+        // Преобразуем данные в числа перед возвратом
         const data = {
-            temp: list[0],
-            raw_temp: list[1],
-            humidity: list[2],
-            raw_hum: list[3],
-            press: list[4],
-            gas: list[5],
-            ecCO2: list[6],
-            bVOC: list[7],
-            IAQ: list[8],
-            SIAQ: list[9],
-            IAQ_ACC: list[10],
-            status: list[11]
+            temp: parseFloat(list[0]),
+            raw_temp: parseFloat(list[1]),
+            humidity: parseFloat(list[2]),
+            raw_hum: parseFloat(list[3]),
+            press: parseFloat(list[4]),
+            gas: parseFloat(list[5]),
+            ecCO2: parseFloat(list[6]),
+            bVOC: parseFloat(list[7]),
+            IAQ: parseFloat(list[8]),
+            SIAQ: parseFloat(list[9]),
+            IAQ_ACC: parseInt(list[10], 10),
+            status: parseInt(list[11], 10)
         };
 
         // Возвращаем данные в формате JSON
@@ -45,7 +36,7 @@ app.get('/data', async (req, res) => {
         console.error(err);
         res.status(500).send('Error retrieving data');
     }
-})
+});
 
 // Статический HTML контент
 app.get('/', (req, res) => {
@@ -80,9 +71,8 @@ app.get('/', (req, res) => {
                     document.getElementById('SIAQ').textContent = data.SIAQ.toFixed(0);
                     document.getElementById('IAQ_ACC').textContent = data.IAQ_ACC.toFixed(0);
                     document.getElementById('status').textContent = data.status.toFixed(0);
-                    document.getElementById('dyn_rad').textContent = data.dyn_rad;
-                    document.getElementById('stat_rad').textContent = data.stat_rad;
-                });
+                })
+                .catch(error => console.error('Error fetching data:', error));
         }
         setInterval(updateData, 3000);
     </script>
@@ -90,67 +80,47 @@ app.get('/', (req, res) => {
 <body onload="updateData()">
     <h1>ODROID: WEB-MET</h1>
     <section class="metrics">
-    <div class="temp">&#127777;
-        <p id="temp"></p>
-        C&deg;
-    </div>
-    <div class="raw_temp">&#127777;<sub>raw</sub>
-        <p id="raw_temp"></p>
-        C&deg;
-    </div>
-    <div class="humidity">&#128167;
-        <p id="humidity"></p>
-        &percnt;
-    </div>
-    <div class="raw_hum">&#128167;<sub>raw</sub>
-        <p id="raw_hum"></p>
-        &percnt;
-    </div>
-    <div class="press">&#128137;
-        <p id="press"></p>
-        mmHg
-    </div>
-    <div class="gas">&#128067;
-        <p id="gas"></p>
-        K&ohm;
-    </div>
-    <div class="ecCO2">CO<sub>2</sub>
-        <p id="ecCO2"></p>
-        ppm
-    </div>
-    <div class="bVOC">VOC
-        <p id="bVOC"></p>
-        ppm
-    </div>
-    <div class="IAQ">&#128663;<sub>IAQ</sub>
-        <p id="IAQ"></p>
-        int
-    </div>
-    <div class="SIAQ">&#127968;<sub>IAQ</sub>
-        <p id="SIAQ"></p>
-        int
-    </div>
-    <div class="IAQ_ACC">&#9878;<sub>IAQ</sub>
-        <p id="IAQ_ACC"></p>
-        int
-    </div>
-    <div class="status">&#128681;
-        <p id="status"></p>
-        int
-    </div>
-    <div class="dyn_rad">&#9762;&#128663;
-        <p id="dyn_rad"></p>
-        &mu;R/h
-    </div>
-    <div class="stat_rad">&#9762;&#127968;
-        <p id="stat_rad"></p>
-        &mu;R/h
-    </div>
+        <div class="temp">&#127777;
+            <p id="temp"></p> C&deg;
+        </div>
+        <div class="raw_temp">&#127777;<sub>raw</sub>
+            <p id="raw_temp"></p> C&deg;
+        </div>
+        <div class="humidity">&#128167;
+            <p id="humidity"></p> &percnt;
+        </div>
+        <div class="raw_hum">&#128167;<sub>raw</sub>
+            <p id="raw_hum"></p> &percnt;
+        </div>
+        <div class="press">&#128137;
+            <p id="press"></p> mmHg
+        </div>
+        <div class="gas">&#128067;
+            <p id="gas"></p> K&ohm;
+        </div>
+        <div class="ecCO2">CO<sub>2</sub>
+            <p id="ecCO2"></p> ppm
+        </div>
+        <div class="bVOC">VOC
+            <p id="bVOC"></p> ppm
+        </div>
+        <div class="IAQ">&#128663;<sub>IAQ</sub>
+            <p id="IAQ"></p> int
+        </div>
+        <div class="SIAQ">&#127968;<sub>IAQ</sub>
+            <p id="SIAQ"></p> int
+        </div>
+        <div class="IAQ_ACC">&#9878;<sub>IAQ</sub>
+            <p id="IAQ_ACC"></p> int
+        </div>
+        <div class="status">&#128681;
+            <p id="status"></p> int
+        </div>
     </section>
 </body>
 </html>`);
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://192.168.1.42:${port}`);
 });
