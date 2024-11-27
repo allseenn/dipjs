@@ -151,7 +151,7 @@ app.get('/', (req, res) => {
         try {
             const response = await fetch('https://wttr.in/Moscow?format=%t');
             const weather = await response.text(); // Получаем текстовую информацию о погоде
-            document.getElementById('weather-temp').textContent = weather;
+            document.getElementById('weather-temp').textContent = weather.replace('°C', '');
         } catch (error) {
             console.error('Error fetching weather data:', error);
             document.getElementById('weather-temp').textContent = 'N/A';
@@ -173,14 +173,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <h5 class="card-title">Температура воздуха</h5>
                     <p class="card-text display-5" id="temp">--</p>
-                    <p class="text-muted">C°</p>
+                    <p class="text-muted">°C</p>
                 </div>
             </div>
             <div class="card text-center" id="card2">
                 <div class="card-body">
                     <h5 class="card-title">Некомпенсированная температура воздуха</h5>
                     <p class="card-text display-5" id="raw_temp">--</p>
-                    <p class="text-muted">C°</p>
+                    <p class="text-muted">°C</p>
                 </div>
             </div>
             <div class="card text-center" id="card3">
