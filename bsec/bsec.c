@@ -106,9 +106,24 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float static_iaq, float co2_equivalent,
                   float breath_voc_equivalent)
 {
+    const char *filename = "/dev/i2c-1"; 
+    int file = open(filename, O_RDWR);
+    int addr = 0x66;
+    uint8_t byte1 = i2c_smbus_read_byte_data(file, 0x03);
+    uint8_t byte2 = i2c_smbus_read_byte_data(file, 0x04);
+    uint8_t byte3 = i2c_smbus_read_byte_data(file, 0x05);
+    uint32_t value = (byte1 << 16) | (byte2 << 8) | byte3;
+    float rad_dyn = value * 0.1f;
+    uint8_t byte1 = i2c_smbus_read_byte_data(file, 0x06);
+    uint8_t byte2 = i2c_smbus_read_byte_data(file, 0x07);
+    uint8_t byte3 = i2c_smbus_read_byte_data(file, 0x08);
+    uint32_t value = (byte1 << 16) | (byte2 << 8) | byte3;
+    float rad_stat = value * 0.1f;
+    close(file);
+    
     time_t t = time(NULL);
 
-        char command[1024];
+    char command[1024];
     char buffer[1024];
     sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.0f",
             temperature, raw_temperature, humidity, raw_humidity,
@@ -118,28 +133,13 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
 
 
-        // Создаем временный файловый дескриптор для /dev/null
-    int dev_null = open("/dev/null", O_WRONLY);
-
-    // Сохраняем стандартный вывод во временный файловый дескриптор
-    int saved_stdout = dup(fileno(stdout));
-    dup2(dev_null, fileno(stdout));
-
-    // Выполняем команду
-    //system(command);
-
-    // Восстанавливаем стандартный вывод
-    dup2(saved_stdout, fileno(stdout));
-
-    // Закрываем временный файловый дескриптор
-    close(dev_null);
     float pressure_hpa = pressure / 100 * hectoPascal;
     float gas_ohms = gas / 1000;
 
     redisContext *c = redisConnect("127.0.0.1", 6379);
     redisCommand(c, "DEL 0");
-    redisCommand(c, "RPUSH 0 %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f", temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
-    redisCommand(c, "RPUSH %lu %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f", t, temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status);
+    redisCommand(c, "RPUSH 0 %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f %.2f %.2f", temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
+    redisCommand(c, "RPUSH %lu %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f %.2f %.2f", t, temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
     redisFree(c);
 
     if (once) {
