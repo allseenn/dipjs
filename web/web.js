@@ -15,7 +15,7 @@ app.get('/data', async (req, res) => {
         const list = await client.lRange('0', 0, -1);
 
 
-
+        console.log(list[0]);
         // Разбиваем строку значений (например: '23.50 25.00 55.00 ...') на массив
         //const values = list.split(' ').map(value => parseFloat(value));
 
@@ -33,10 +33,10 @@ app.get('/data', async (req, res) => {
             gas: list[5],
             ecCO2: list[6],
             bVOC: list[7],
-            IAQ: iaq,
-            SIAQ: static_iaq,
-            IAQ_ACC: iaq_accuracy,
-            status: bsec_status
+            IAQ: list[8],
+            SIAQ: list[9],
+            IAQ_ACC: list[10],
+            status: list[11]
         };
 
         // Возвращаем данные в формате JSON
