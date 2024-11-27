@@ -10,7 +10,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <linux/i2c-dev.h>
-#include <linux/i2c.h>
 #include <hiredis.h>
 #include "bsec_integration.h"
 #define DESTZONE "TZ=Europe/Moscow"
@@ -100,20 +99,6 @@ int64_t get_timestamp_us()
     return system_current_time_us;
 }
 
-int i2c_smbus_read_byte_data(int file, uint8_t command) {
-    union i2c_smbus_data data;
-    struct i2c_smbus_ioctl_data args = {
-        .read_write = I2C_SMBUS_READ,
-        .command = command,
-        .size = I2C_SMBUS_BYTE_DATA,
-        .data = &data
-    };
-    if (ioctl(file, I2C_SMBUS, &args) < 0) {
-        perror("I2C_SMBUS_READ_BYTE_DATA failed");
-        return -1;
-    }
-    return data.byte & 0xFF;
-}
 
 void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float temperature, float humidity, float pressure,
@@ -122,37 +107,38 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float static_iaq, float co2_equivalent,
                   float breath_voc_equivalent)
 {
-    const char *filename = "/dev/i2c-1"; 
-    int file = open(filename, O_RDWR);
-    if (file < 0) {
-        perror("Failed to open the I2C bus");
-        printf("Failed to open the I2C bus\n");
-    }
-    int addr = 0x66;
-    uint8_t byte1 = i2c_smbus_read_byte_data(file, 0x03);
-    uint8_t byte2 = i2c_smbus_read_byte_data(file, 0x04);
-    uint8_t byte3 = i2c_smbus_read_byte_data(file, 0x05);
+ 
+    int byte1;
+    FILE *fp = popen("i2cget -y 1 0x66 0x03", "r");
+    fscanf(fp, "%2x", &byte1);
+    pclose(fp);
+    int byte2;
+    FILE *fp = popen("i2cget -y 1 0x66 0x04", "r");
+    fscanf(fp, "%2x", &byte2);
+    pclose(fp);
+    int byte3;
+    FILE *fp = popen("i2cget -y 1 0x66 0x05", "r");
+    fscanf(fp, "%2x", &byte3);
+    pclose(fp);
     uint32_t value = (byte1 << 16) | (byte2 << 8) | byte3;
-    float rad_dyn = value * 0.1f;
-    byte1 = i2c_smbus_read_byte_data(file, 0x06);
-    byte2 = i2c_smbus_read_byte_data(file, 0x07);
-    byte3 = i2c_smbus_read_byte_data(file, 0x08);
+    float rad_dyn = (float)value / 10.0f;
+
+    byte1;
+    FILE *fp = popen("i2cget -y 1 0x66 0x06", "r");
+    fscanf(fp, "%2x", &byte1);
+    pclose(fp);
+    byte2;
+    FILE *fp = popen("i2cget -y 1 0x66 0x07", "r");
+    fscanf(fp, "%2x", &byte2);
+    pclose(fp);
+    byte3;
+    FILE *fp = popen("i2cget -y 1 0x66 0x08", "r");
+    fscanf(fp, "%2x", &byte3);
+    pclose(fp);
     value = (byte1 << 16) | (byte2 << 8) | byte3;
-    float rad_stat = value * 0.1f;
-    close(file);
-    
+    float rad_stat = (float)value / 10.0f;
+
     time_t t = time(NULL);
-
-    // char command[1024];
-    // char buffer[1024];
-    // sprintf(buffer, "%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.0f",
-    //         temperature, raw_temperature, humidity, raw_humidity,
-    //         pressure / 100 * hectoPascal, gas/1000, co2_equivalent,
-    //         breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, '\0');
-
-    // sprintf(command, "redis-cli set %lu '%s'", (unsigned long)t, buffer);
-
-
     float pressure_hpa = pressure / 100 * hectoPascal;
     float gas_ohms = gas / 1000;
 
