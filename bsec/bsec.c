@@ -126,7 +126,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     int file = open(filename, O_RDWR);
     if (file < 0) {
         perror("Failed to open the I2C bus");
-        return -1;
+        return 1;
     }
     int addr = 0x66;
     uint8_t byte1 = i2c_smbus_read_byte_data(file, 0x03);
