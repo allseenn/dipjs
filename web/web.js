@@ -14,13 +14,9 @@ app.get('/data', async (req, res) => {
         // Получаем элементы списка под ключом "0"
         const list = await client.lRange('0', 0, -1);
 
-        // Проверяем, получили ли мы какие-либо значения
-        if (list.length === 0) {
-            return res.json({ message: 'No data available' });
-        }
 
         // Разбиваем строку значений (например: '23.50 25.00 55.00 ...') на массив
-        const values = list[0].split(' ').map(value => parseFloat(value));
+        const values = list.split(' ').map(value => parseFloat(value));
 
         // структуруем данные в объект с нужными полями
         const [temperature, raw_temperature, humidity, raw_humidity, 
