@@ -152,6 +152,7 @@ app.get('/', (req, res) => {
             const response = await fetch('https://wttr.in/Moscow?format=%t+%h');
             const weather = await response.text(); // Получаем текстовую информацию о погоде
             document.getElementById('weather-temp').textContent = weather.split(' ')[0].replace('°C', '');
+            document.getElementById('weather-hum').textContent = weather.split(' ')[1].replace('%', '');
         } catch (error) {
             console.error('Error fetching weather data:', error);
             document.getElementById('weather-temp').textContent = 'N/A';
@@ -267,11 +268,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="text-muted">μR/h</p>
                 </div>
             </div>
-                    <div class="card text-center" id="weather-card">
+                <div class="card text-center" id="weather-card">
                 <div class="card-body">
                     <h5 class="card-title">Температура на улице</h5>
                     <p class="card-text display-5" id="weather-temp">--</p>
                     <p class="text-muted" id="weather-time">°C</p>
+                </div>
+            </div>
+                <div class="card text-center" id="weather-card">
+                <div class="card-body">
+                    <h5 class="card-title">Влажность на улице</h5>
+                    <p class="card-text display-5" id="weather-hum">--</p>
+                    <p class="text-muted" id="weather-time">%</p>
                 </div>
             </div>
         </div>
