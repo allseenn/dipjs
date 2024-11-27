@@ -109,7 +109,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 {
  
     float rad_dyn;
-    float rad_stat;
+    int rad_stat;
     FILE *fp = popen("rad.sh", "r");
     fscanf(fp, "%f %f", &rad_dyn, &rad_stat);
     pclose(fp);
@@ -150,8 +150,8 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 
     redisContext *c = redisConnect("127.0.0.1", 6379);
     redisCommand(c, "DEL 0");
-    redisCommand(c, "RPUSH 0 %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f %.2f %.0f", temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
-    redisCommand(c, "RPUSH %lu %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f %.2f %.0f", t, temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
+    redisCommand(c, "RPUSH 0 %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %d %d %.1f %d", temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
+    redisCommand(c, "RPUSH %lu %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %d %d %.1f %d", t, temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
     redisFree(c);
 
     if (once) {
@@ -169,7 +169,7 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
         printf("%.0f ", iaq_accuracy); // IAQ accuracy
         printf("%.0f ", bsec_status);
         printf("%.1f ", rad_dyn); // IAQ accuracy
-        printf("%.0f ", rad_stat);
+        printf("%.d ", rad_stat);
         printf("\r\n");
         fflush(stdout);
     }
