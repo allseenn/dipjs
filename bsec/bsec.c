@@ -124,10 +124,9 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
 {
     const char *filename = "/dev/i2c-1"; 
     int file = open(filename, O_RDWR);
-    if (ioctl(file, I2C_SLAVE, addr) < 0) {
-        perror("Failed to acquire bus access or talk to slave");
-        close(file);
-        return 1;
+    if (file < 0) {
+        perror("Failed to open the I2C bus");
+        return -1;
     }
     int addr = 0x66;
     uint8_t byte1 = i2c_smbus_read_byte_data(file, 0x03);
