@@ -1,6 +1,6 @@
 const express = require('express');
 const redis = require('redis');
-const fetch = require('node-fetch'); // Для запросов Open-Meteo
+const fetch = require('node-fetch'); // Для запросов Open
 
 const app = express();
 const port = 3000;
