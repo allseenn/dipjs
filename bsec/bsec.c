@@ -108,11 +108,6 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
                   float breath_voc_equivalent)
 {
  
-    float rad_dyn;
-    int rad_stat;
-    FILE *fp = popen("rad.sh", "r");
-    fscanf(fp, "%f %f", &rad_dyn, &rad_stat);
-    pclose(fp);
 
     // int byte1;
     // FILE *fp = popen("i2cget -y 1 0x66 0x03", "r");
@@ -143,14 +138,19 @@ void output_ready(int64_t timestamp, float iaq, uint8_t iaq_accuracy,
     // pclose(fp);
     // value = (byte1 << 16) | (byte2 << 8) | byte3;
     // float rad_stat = (float)value / 10.0f;
+    float rad_dyn;
+    int rad_stat;
+    FILE *fp = popen("rad.sh", "r");
+    fscanf(fp, "%f %f", &rad_dyn, &rad_stat);
+    pclose(fp);
 
     time_t t = time(NULL);
     float pressure_hpa = pressure / 100 * hectoPascal;
     float gas_ohms = gas / 1000;
 
     redisContext *c = redisConnect("127.0.0.1", 6379);
-    redisCommand(c, "DEL TEST");
-    redisCommand(c, "RPUSH TEST %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %f %f %f %f", temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
+    redisCommand(c, "DEL 0");
+    redisCommand(c, "RPUSH 0 %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f", temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
     redisCommand(c, "RPUSH %lu %.2f %.2f %.2f %.2f %.2f %.2f %.0f %.2f %.2f %.2f %.0f %.0f %.1f %.0f", t, temperature, raw_temperature, humidity, raw_humidity, pressure_hpa, gas_ohms, co2_equivalent, breath_voc_equivalent, iaq, static_iaq, iaq_accuracy, bsec_status, rad_dyn, rad_stat);
     redisFree(c);
 
