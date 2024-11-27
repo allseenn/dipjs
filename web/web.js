@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Temperature</h5>
+                        <h5 class="card-title">Температура воздуха</h5>
                         <p class="card-text display-5" id="temp">--</p>
                         <p class="text-muted">C°</p>
                     </div>
@@ -90,7 +90,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Raw Temperature</h5>
+                        <h5 class="card-title">Некомпенсированная температура воздуха</h5>
                         <p class="card-text display-5" id="raw_temp">--</p>
                         <p class="text-muted">C°</p>
                     </div>
@@ -99,7 +99,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Humidity</h5>
+                        <h5 class="card-title">Относительная влажность воздуха</h5>
                         <p class="card-text display-5" id="humidity">--</p>
                         <p class="text-muted">%</p>
                     </div>
@@ -109,7 +109,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Raw Humidity</h5>
+                        <h5 class="card-title">Некомпенсированная влажность воздуха</h5>
                         <p class="card-text display-5" id="raw_hum">--</p>
                         <p class="text-muted">%</p>
                     </div>
@@ -118,7 +118,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Pressure</h5>
+                        <h5 class="card-title">Атмосферное давление</h5>
                         <p class="card-text display-5" id="press">--</p>
                         <p class="text-muted">mmHg</p>
                     </div>
@@ -127,7 +127,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">gas</h5>
+                        <h5 class="card-title">Электрическое сопротивление воздуха</h5>
                         <p class="card-text display-5" id="gas">--</p>
                         <p class="text-muted">K&ohm;</p>
                     </div>
@@ -136,7 +136,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">ecCO2</h5>
+                        <h5 class="card-title">Эквивалентная концентрация CO<sub>2</sub> в воздух</h5>
                         <p class="card-text display-5" id="ecCO2">--</p>
                         <p class="text-muted">ppm</p>
                     </div>
@@ -145,7 +145,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">bVOC</h5>
+                        <h5 class="card-title">Концентрация летучих органических веществ</h5>
                         <p class="card-text display-5" id="bVOC">--</p>
                         <p class="text-muted">ppm</p>
                     </div>
@@ -154,7 +154,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">IAQ</h5>
+                        <h5 class="card-title">Динамический индекс качества воздуха</h5>
                         <p class="card-text display-5" id="IAQ">--</p>
                         <p class="text-muted">IAQ</p>
                     </div>
@@ -163,7 +163,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">SIAQ</h5>
+                        <h5 class="card-title">Статический индекс качества воздуха</h5>
                         <p class="card-text display-5" id="SIAQ">--</p>
                         <p class="text-muted">SIAQ</p>
                     </div>
@@ -172,7 +172,7 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">IAQ_ACC</h5>
+                        <h5 class="card-title">Точность индекса качества воздуха</h5>
                         <p class="card-text display-5" id="IAQ_ACC">--</p>
                         <p class="text-muted">IAQ_ACC</p>
                     </div>
@@ -181,27 +181,27 @@ app.get('/', (req, res) => {
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">status</h5>
+                        <h5 class="card-title">Ошибки работы воздушного датчика</h5>
                         <p class="card-text display-5" id="status">--</p>
-                        <p class="text-muted">status</p>
+                        <p class="text-muted">CODE</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">dyn_rad</h5>
-                        <p class="card-text display-5" id="dyn_rad">--</p>
-                        <p class="text-muted">dyn_rad</p>
+                        <h5 class="card-title">Динамический уровень радиации</h5>
+                        <p class="card-text display-5" id="rad_dyn">--</p>
+                        <p class="text-muted">μR/h</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">stat_rad</h5>
-                        <p class="card-text display-5" id="stat_rad">--</p>
-                        <p class="text-muted">stat_rad</p>
+                        <h5 class="card-title">Статический уровень радиации</h5>
+                        <p class="card-text display-5" id="rad_stat">--</p>
+                        <p class="text-muted">μR/h</p>
                     </div>
                 </div>
             </div>
