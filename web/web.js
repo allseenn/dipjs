@@ -42,14 +42,77 @@ app.get('/data', async (req, res) => {
 
 // Статический HTML контент
 app.get('/', (req, res) => {
-    res.send(`<!DOCTYPE HTML>
+    res.send(`
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ODROID: WEB-MET</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            cursor: grab;
+            user-select: none;
+        }
+        .card.dragging {
+            opacity: 0.5;
+        }
+        .grid-container {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    </style>
     <script>
+        let draggedElement = null;
+
+        function enableDragAndDrop() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.setAttribute('draggable', true);
+
+                card.addEventListener('dragstart', (event) => {
+                    draggedElement = card;
+                    card.classList.add('dragging');
+                    event.dataTransfer.setData('text/plain', card.id);
+                });
+
+                card.addEventListener('dragend', () => {
+                    card.classList.remove('dragging');
+                });
+            });
+
+            const container = document.querySelector('.grid-container');
+            container.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                const afterElement = getDragAfterElement(container, event.clientY);
+                if (afterElement == null) {
+                    container.appendChild(draggedElement);
+                } else {
+                    container.insertBefore(draggedElement, afterElement);
+                }
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            enableDragAndDrop();
+        });
+
         function updateData() {
             fetch('/data')
                 .then(response => response.json())
@@ -77,139 +140,110 @@ app.get('/', (req, res) => {
 <body onload="updateData()" class="bg-light">
     <div class="container my-4">
         <h1 class="text-center mb-4">ODROID: WEB-MET</h1>
-        <div class="row g-3">
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Температура воздуха</h5>
-                        <p class="card-text display-5" id="temp">--</p>
-                        <p class="text-muted">C°</p>
-                    </div>
+        <div class="grid-container">
+            <div class="card text-center" id="card1">
+                <div class="card-body">
+                    <h5 class="card-title">Температура воздуха</h5>
+                    <p class="card-text display-5" id="temp">--</p>
+                    <p class="text-muted">C°</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Некомпенсированная температура воздуха</h5>
-                        <p class="card-text display-5" id="raw_temp">--</p>
-                        <p class="text-muted">C°</p>
-                    </div>
+            <div class="card text-center" id="card2">
+                <div class="card-body">
+                    <h5 class="card-title">Некомпенсированная температура воздуха</h5>
+                    <p class="card-text display-5" id="raw_temp">--</p>
+                    <p class="text-muted">C°</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Относительная влажность воздуха</h5>
-                        <p class="card-text display-5" id="humidity">--</p>
-                        <p class="text-muted">%</p>
-                    </div>
+            <div class="card text-center" id="card3">
+                <div class="card-body">
+                    <h5 class="card-title">Относительная влажность воздуха</h5>
+                    <p class="card-text display-5" id="humidity">--</p>
+                    <p class="text-muted">%</p>
                 </div>
             </div>
-            <!-- Дополнительные карточки -->
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Некомпенсированная влажность воздуха</h5>
-                        <p class="card-text display-5" id="raw_hum">--</p>
-                        <p class="text-muted">%</p>
-                    </div>
+            <div class="card text-center" id="card4">
+                <div class="card-body">
+                    <h5 class="card-title">Некомпенсированная влажность воздуха</h5>
+                    <p class="card-text display-5" id="raw_hum">--</p>
+                    <p class="text-muted">%</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Атмосферное давление</h5>
-                        <p class="card-text display-5" id="press">--</p>
-                        <p class="text-muted">mmHg</p>
-                    </div>
+            <div class="card text-center" id="card5">
+                <div class="card-body">
+                    <h5 class="card-title">Атмосферное давление</h5>
+                    <p class="card-text display-5" id="press">--</p>
+                    <p class="text-muted">mmHg</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Электрическое сопротивление воздуха</h5>
-                        <p class="card-text display-5" id="gas">--</p>
-                        <p class="text-muted">K&ohm;</p>
-                    </div>
+            <div class="card text-center" id="card6">
+                <div class="card-body">
+                    <h5 class="card-title">Электрическое сопротивление воздуха</h5>
+                    <p class="card-text display-5" id="gas">--</p>
+                    <p class="text-muted">K&ohm;</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Эквивалентная концентрация CO<sub>2</sub> в воздух</h5>
-                        <p class="card-text display-5" id="ecCO2">--</p>
-                        <p class="text-muted">ppm</p>
-                    </div>
+            <div class="card text-center" id="card7">
+                <div class="card-body">
+                    <h5 class="card-title">Эквивалентная концентрация CO<sub>2</sub> в воздух</h5>
+                    <p class="card-text display-5" id="ecCO2">--</p>
+                    <p class="text-muted">ppm</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Концентрация летучих органических веществ</h5>
-                        <p class="card-text display-5" id="bVOC">--</p>
-                        <p class="text-muted">ppm</p>
-                    </div>
+            <div class="card text-center" id="card8">
+                <div class="card-body">
+                    <h5 class="card-title">Концентрация летучих органических веществ</h5>
+                    <p class="card-text display-5" id="bVOC">--</p>
+                    <p class="text-muted">ppm</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Динамический индекс качества воздуха</h5>
-                        <p class="card-text display-5" id="IAQ">--</p>
-                        <p class="text-muted">IAQ</p>
-                    </div>
+            <div class="card text-center" id="card9">
+                <div class="card-body">
+                    <h5 class="card-title">Динамический индекс качества воздуха</h5>
+                    <p class="card-text display-5" id="IAQ">--</p>
+                    <p class="text-muted">IAQ</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Статический индекс качества воздуха</h5>
-                        <p class="card-text display-5" id="SIAQ">--</p>
-                        <p class="text-muted">SIAQ</p>
-                    </div>
+            <div class="card text-center" id="card10">
+                <div class="card-body">
+                    <h5 class="card-title">Статический индекс качества воздуха</h5>
+                    <p class="card-text display-5" id="SIAQ">--</p>
+                    <p class="text-muted">SIAQ</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Точность индекса качества воздуха</h5>
-                        <p class="card-text display-5" id="IAQ_ACC">--</p>
-                        <p class="text-muted">IAQ_ACC</p>
-                    </div>
+            <div class="card text-center" id="card11">
+                <div class="card-body">
+                    <h5 class="card-title">Точность индекса качества воздуха</h5>
+                    <p class="card-text display-5" id="IAQ_ACC">--</p>
+                    <p class="text-muted">IAQ_ACC</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Ошибки работы воздушного датчика</h5>
-                        <p class="card-text display-5" id="status">--</p>
-                        <p class="text-muted">CODE</p>
-                    </div>
+            <div class="card text-center" id="card12">
+                <div class="card-body">
+                    <h5 class="card-title">Ошибки работы воздушного датчика</h5>
+                    <p class="card-text display-5" id="status">--</p>
+                    <p class="text-muted">CODE</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Динамический уровень радиации</h5>
-                        <p class="card-text display-5" id="rad_dyn">--</p>
-                        <p class="text-muted">μR/h</p>
-                    </div>
+            <div class="card text-center" id="card13">
+                <div class="card-body">
+                    <h5 class="card-title">Динамический уровень радиации</h5>
+                    <p class="card-text display-5" id="rad_dyn">--</p>
+                    <p class="text-muted">μR/h</p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Статический уровень радиации</h5>
-                        <p class="card-text display-5" id="rad_stat">--</p>
-                        <p class="text-muted">μR/h</p>
-                    </div>
+            <div class="card text-center" id="card14">
+                <div class="card-body">
+                    <h5 class="card-title">Статический уровень радиации</h5>
+                    <p class="card-text display-5" id="rad_stat">--</p>
+                    <p class="text-muted">μR/h</p>
                 </div>
             </div>
-
         </div>
     </div>
 </body>
-</html>`);
+</html>
+`);
 });
 
 app.listen(port, () => {
