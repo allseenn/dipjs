@@ -30,7 +30,6 @@ app.get('/data', async (req, res) => {
             status: parseInt(list[11], 10),
             rad_dyn: parseFloat(list[12]),
             rad_stat: parseInt(list[13], 10)
-            
         };
 
         // Возвращаем данные в формате JSON
@@ -116,10 +115,10 @@ app.get('/', (req, res) => {
             <p id="SIAQ"></p> S-IAQ
         </div>
         <div class="IAQ_ACC">&#9878;
-            <p id="IAQ_ACC"></p>accuracy
+            <p id="IAQ_ACC"></p>QOS
         </div>
         <div class="status">&#128681;
-            <p id="status"></p> int
+            <p id="status"></p> errors
         </div>
         <div class="rad_dyn">&#9762;&#128663;
             <p id="rad_dyn"></p> &mu;R/h

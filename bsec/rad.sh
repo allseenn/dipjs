@@ -15,10 +15,6 @@ while true; do
     static=$(echo "scale=1; $value * 0.1" | bc)
     
     echo "$dinamic $static"
-
-    redis-cli SET dyn_rad $dinamic > /dev/null
-    redis-cli SET stat_rad $static > /dev/null
-
     
     if [ -n "$1" ] && [ "$1" -eq 0 ]; then
         sleep $timeout
