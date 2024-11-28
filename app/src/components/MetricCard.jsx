@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const MetricCard = ({ title, value, unit }) => {
     return (
@@ -12,4 +13,16 @@ const MetricCard = ({ title, value, unit }) => {
     );
 };
 
+MetricCard.propTypes = {
+    title: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    unit: PropTypes.string,
+};
+
+MetricCard.defaultProps = {
+    value: null,
+    unit: '',
+};
+
 export default MetricCard;
+

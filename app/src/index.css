@@ -1,20 +1,3 @@
-/* index.css */
-
-body {
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-h1 {
-    font-size: 2rem;
-    color: #343a40;
-}
-
 .grid-container {
     display: grid;
     gap: 1rem;
@@ -22,50 +5,20 @@ h1 {
     padding: 1rem;
 }
 
-.card {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    cursor: grab;
-    user-select: none;
-    transition: box-shadow 0.3s ease, transform 0.2s ease;
-}
-
-.card:hover {
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-}
-
-.card.dragging {
-    opacity: 0.5;
-    box-shadow: none;
-}
-
 .card-body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
-    text-align: center;
-}
-
-.card-title {
-    font-size: 1rem;
-    color: #495057;
-    margin-bottom: 0.5rem;
+    height: 100%;
 }
 
 .card-text {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #212529;
     margin: 0;
 }
 
-.text-muted {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-top: 0.25rem;
+.card {
+    cursor: grab;
+    user-select: none;
 }
+

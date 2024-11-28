@@ -1,94 +1,66 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MetricCard from './components/MetricCard';
-import { createClient } from 'redis';
+import './index.css';
 
 const App = () => {
     const [metrics, setMetrics] = useState({});
-    const [weather, setWeather] = useState({ temp: '--', hum: '--' });
-    const redisConfig = {
-        socket: {
-            host: '127.0.0.1',
-            port: 6379,
-        },
-    };
+    const weatherCards = [
+        { id: 'weatherTemp', title: 'Температура на улице', unit: '°C' },
+        { id: 'weatherHum', title: 'Влажность на улице', unit: '%' },
+    ];
 
     useEffect(() => {
-        const fetchMetrics = async () => {
-            const client = createClient(redisConfig);
+        // Загружаем данные из API
+        const fetchData = async () => {
             try {
-                await client.connect();
-                const list = await client.lRange('0', 0, -1);
-
-                const data = {
-                    temp: parseFloat(list[0]),
-                    raw_temp: parseFloat(list[1]),
-                    humidity: parseFloat(list[2]),
-                    raw_hum: parseFloat(list[3]),
-                    press: parseFloat(list[4]),
-                    gas: parseFloat(list[5]),
-                    ecCO2: parseFloat(list[6]),
-                    bVOC: parseFloat(list[7]),
-                    IAQ: parseFloat(list[8]),
-                    SIAQ: parseFloat(list[9]),
-                    IAQ_ACC: parseInt(list[10], 10),
-                    status: parseInt(list[11], 10),
-                    rad_dyn: parseFloat(list[12]),
-                    rad_stat: parseInt(list[13], 10),
-                };
-
+                const response = await fetch('/api/data');
+                const data = await response.json();
                 setMetrics(data);
-            } catch (err) {
-                console.error('Error connecting to Redis:', err);
-            } finally {
-                await client.disconnect();
+            } catch (error) {
+                console.error('Error fetching metrics:', error);
             }
         };
 
         const fetchWeather = async () => {
             try {
                 const response = await fetch('https://wttr.in/Moscow?format=%t+%h');
-                const weatherData = await response.text();
-                const [temp, hum] = weatherData.split(' ');
-                setWeather({
-                    temp: temp.replace('°C', ''),
-                    hum: hum.replace('%', ''),
-                });
+                const weather = await response.text();
+                setMetrics((prevMetrics) => ({
+                    ...prevMetrics,
+                    weatherTemp: parseFloat(weather.split(' ')[0].replace('°C', '')),
+                    weatherHum: parseFloat(weather.split(' ')[1].replace('%', '')),
+                }));
             } catch (error) {
                 console.error('Error fetching weather data:', error);
-                setWeather({ temp: 'N/A', hum: 'N/A' });
             }
         };
 
-        fetchMetrics();
+        fetchData();
         fetchWeather();
-        const metricsInterval = setInterval(fetchMetrics, 3000);
-        const weatherInterval = setInterval(fetchWeather, 900000);
-        return () => {
-            clearInterval(metricsInterval);
-            clearInterval(weatherInterval);
-        };
+
+        const interval = setInterval(() => {
+            fetchData();
+            fetchWeather();
+        }, 900000); // обновление каждые 15 минут
+
+        return () => clearInterval(interval);
     }, []);
 
     const cards = [
         { id: 'temp', title: 'Температура воздуха', unit: '°C' },
-        { id: 'raw_temp', title: 'Некомпенсированная температура', unit: '°C' },
-        { id: 'humidity', title: 'Относительная влажность', unit: '%' },
-        { id: 'raw_hum', title: 'Некомпенсированная влажность', unit: '%' },
+        { id: 'raw_temp', title: 'Некомпенсированная температура воздуха', unit: '°C' },
+        { id: 'humidity', title: 'Относительная влажность воздуха', unit: '%' },
+        { id: 'raw_hum', title: 'Некомпенсированная влажность воздуха', unit: '%' },
         { id: 'press', title: 'Атмосферное давление', unit: 'mmHg' },
         { id: 'gas', title: 'Электрическое сопротивление воздуха', unit: 'KΩ' },
-        { id: 'ecCO2', title: 'Эквивалентный CO₂', unit: 'ppm' },
-        { id: 'bVOC', title: 'Летучие органические вещества', unit: 'ppm' },
+        { id: 'ecCO2', title: 'Эквивалентная концентрация CO₂', unit: 'ppm' },
+        { id: 'bVOC', title: 'Концентрация ЛОВ', unit: 'ppm' },
         { id: 'IAQ', title: 'Динамический индекс качества воздуха', unit: 'D-IAQ' },
         { id: 'SIAQ', title: 'Статический индекс качества воздуха', unit: 'S-IAQ' },
-        { id: 'IAQ_ACC', title: 'Точность качества воздуха', unit: 'QoS' },
-        { id: 'status', title: 'Ошибки датчика', unit: 'CODE' },
-        { id: 'rad_dyn', title: 'Динамическая радиация', unit: 'μR/h' },
-        { id: 'rad_stat', title: 'Статическая радиация', unit: 'μR/h' },
-    ];
-
-    const weatherCards = [
-        { id: 'weather-temp', title: 'Температура на улице', value: weather.temp, unit: '°C' },
-        { id: 'weather-hum', title: 'Влажность на улице', value: weather.hum, unit: '%' },
+        { id: 'IAQ_ACC', title: 'Точность индекса качества воздуха', unit: 'QoS' },
+        { id: 'status', title: 'Ошибки работы датчика', unit: 'CODE' },
+        { id: 'rad_dyn', title: 'Динамический уровень радиации', unit: 'μR/h' },
+        { id: 'rad_stat', title: 'Статический уровень радиации', unit: 'μR/h' },
     ];
 
     return (
@@ -107,7 +79,7 @@ const App = () => {
                     <MetricCard
                         key={card.id}
                         title={card.title}
-                        value={card.value}
+                        value={metrics[card.id]}
                         unit={card.unit}
                     />
                 ))}
