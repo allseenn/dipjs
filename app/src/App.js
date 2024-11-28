@@ -35,15 +35,23 @@ const App = () => {
             const response = await fetch('https://wttr.in/Moscow?format=%t+%h');
             const weather = await response.text();
             console.log('Fetched weather:', weather); // Логирование для дебага
-            const newWeather = {
-                weatherTemp: parseFloat(weather.split(' ')[0].replace('°C', '')),
-                weatherHum: parseFloat(weather.split(' ')[1].replace('%', '')),
-            };
 
-            setMetrics((prevMetrics) => ({
-                ...prevMetrics,
-                ...newWeather,
-            }));
+            const weatherData = weather.split(' ');
+            
+            // Проверяем, что в ответе действительно есть два значения
+            if (weatherData.length === 2) {
+                const newWeather = {
+                    weatherTemp: parseFloat(weatherData[0].replace('°C', '')),
+                    weatherHum: parseFloat(weatherData[1].replace('%', '')),
+                };
+
+                setMetrics((prevMetrics) => ({
+                    ...prevMetrics,
+                    ...newWeather,
+                }));
+            } else {
+                console.error('Unexpected weather data format:', weatherData);
+            }
         } catch (error) {
             console.error('Error fetching weather data:', error);
         }
