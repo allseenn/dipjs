@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MetricCard from './components/MetricCard'; // Существующий компонент
-import { Container, Grid, Typography, Paper, Box } from '@mui/material';
+import { Container, Grid, Typography, Paper } from '@mui/material';
 import './index.css';
 
 const App = () => {
@@ -10,7 +10,6 @@ const App = () => {
         { id: 'weatherHum', title: 'Влажность на улице', unit: '%' },
     ];
 
-    // Функция для загрузки метрик с сервера
     const fetchData = async () => {
         try {
             const response = await fetch('/api/data');
@@ -18,7 +17,7 @@ const App = () => {
                 const data = await response.json();
                 setMetrics((prevMetrics) => ({
                     ...prevMetrics,
-                    ...data,  // Обновляем метрики
+                    ...data,
                 }));
             } else {
                 console.error('Error fetching metrics: ', response.statusText);
@@ -28,7 +27,6 @@ const App = () => {
         }
     };
 
-    // Функция для загрузки данных о погоде
     const fetchWeather = async () => {
         try {
             const response = await fetch('https://wttr.in/Moscow?format=%t+%h');
@@ -38,7 +36,6 @@ const App = () => {
                 weatherHum: parseFloat(weather.split(' ')[1].replace('%', '')),
             };
 
-            // Обновляем только погоду, если данные о погоде изменились
             setMetrics((prevMetrics) => ({
                 ...prevMetrics,
                 ...newWeather,
@@ -48,7 +45,6 @@ const App = () => {
         }
     };
 
-    // Загружаем данные из API и погоду
     useEffect(() => {
         fetchData();
         fetchWeather();
@@ -56,12 +52,11 @@ const App = () => {
         const interval = setInterval(() => {
             fetchData();
             fetchWeather();
-        }, 3000); // обновление каждые 3 секунды
+        }, 3000);
 
-        return () => clearInterval(interval); // очистка интервала
+        return () => clearInterval(interval);
     }, []);
 
-    // Массив метрик
     const cards = [
         { id: 'temp', title: 'Температура воздуха', unit: '°C' },
         { id: 'raw_temp', title: 'Некомпенсированная температура воздуха', unit: '°C' },
@@ -92,7 +87,7 @@ const App = () => {
                                 {card.title}
                             </Typography>
                             <Typography variant="h4" align="center">
-                                {metrics[card.id] || '--'} {card.unit}
+                                {metrics[card.id] ?? '--'} {card.unit} {/* Используем nullish coalescing */}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -104,7 +99,7 @@ const App = () => {
                                 {card.title}
                             </Typography>
                             <Typography variant="h4" align="center">
-                                {metrics[card.id] || '--'} {card.unit}
+                                {metrics[card.id] ?? '--'} {card.unit} {/* Используем nullish coalescing */}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -115,4 +110,5 @@ const App = () => {
 };
 
 export default App;
+
 
