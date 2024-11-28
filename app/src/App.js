@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MetricCard from './components/MetricCard';
+import MetricCard from './components/MetricCard'; // Существующий компонент
+import { Container, Grid, Typography, Paper, Box } from '@mui/material';
 import './index.css';
 
 const App = () => {
@@ -79,27 +80,37 @@ const App = () => {
     ];
 
     return (
-        <div className="container my-4">
-            <h1 className="text-center mb-4">ODROID: WEB-MET</h1>
-            <div className="grid-container">
+        <Container maxWidth="lg" className="container my-4">
+            <Typography variant="h3" align="center" gutterBottom>
+                ODROID: WEB-MET
+            </Typography>
+            <Grid container spacing={3}>
                 {cards.map((card) => (
-                    <MetricCard
-                        key={card.id}
-                        title={card.title}
-                        value={metrics[card.id] || '--'} 
-                        unit={card.unit}
-                    />
+                    <Grid item xs={12} sm={6} md={4} key={card.id}>
+                        <Paper elevation={3} sx={{ padding: 2 }}>
+                            <Typography variant="h6" align="center">
+                                {card.title}
+                            </Typography>
+                            <Typography variant="h4" align="center">
+                                {metrics[card.id] || '--'} {card.unit}
+                            </Typography>
+                        </Paper>
+                    </Grid>
                 ))}
                 {weatherCards.map((card) => (
-                    <MetricCard
-                        key={card.id}
-                        title={card.title}
-                        value={metrics[card.id] || '--'} 
-                        unit={card.unit}
-                    />
+                    <Grid item xs={12} sm={6} md={4} key={card.id}>
+                        <Paper elevation={3} sx={{ padding: 2 }}>
+                            <Typography variant="h6" align="center">
+                                {card.title}
+                            </Typography>
+                            <Typography variant="h4" align="center">
+                                {metrics[card.id] || '--'} {card.unit}
+                            </Typography>
+                        </Paper>
+                    </Grid>
                 ))}
-            </div>
-        </div>
+            </Grid>
+        </Container>
     );
 };
 
