@@ -82,7 +82,7 @@ const App = () => {
                 {cards.map((card) => (
                     <Grid item xs={12} sm={6} md={3} key={card.id}> {/* Используем md={3} для 4 элементов в ряду */}
                         <Paper className="metric-card" elevation={3}>
-                            <Typography variant="h6" align="center" className="card-title">
+                            <Typography variant="body1" align="center" className="card-title">
                                 {card.title}
                             </Typography>
                             <Typography variant="h4" align="center" className="card-value">
@@ -97,7 +97,7 @@ const App = () => {
                 {weatherCards.map((card) => (
                     <Grid item xs={12} sm={6} md={3} key={card.id}> {/* Используем md={3} для 4 элементов в ряду */}
                         <Paper className="metric-card" elevation={3}>
-                            <Typography variant="h6" align="center" className="card-title">
+                            <Typography variant="body2" align="center" className="card-title">
                                 {card.title}
                             </Typography>
                             <Typography variant="h4" align="center" className="card-value">
@@ -115,3 +115,4 @@ const App = () => {
 };
 
 export default App;
+
