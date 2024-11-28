@@ -6,8 +6,8 @@ const App = () => {
     const [metrics, setMetrics] = useState({});
 
     const weatherCards = [
-        { id: 'weatherTemp', title: 'Температура на улице', unit: '°C', blue: [0, 10], green: [11, 20], red: [21, 40] },
-        { id: 'weatherHum', title: 'Влажность на улице', unit: '%', blue: [0, 10], green: [11, 20], red: [21, 40] },
+        { id: 'weatherTemp', title: 'Температура на улице', unit: '°C', blue: [-50, 0], green: [1, 25], red: [26, 50] },
+        { id: 'weatherHum', title: 'Влажность на улице', unit: '%', blue: [61, 100], green: [31, 60], red: [0, 30]  },
     ];
 
     // Функция для получения данных с API
@@ -75,18 +75,18 @@ const App = () => {
     const cards = [
         { id: 'temp', title: 'Температура воздуха', unit: '°C', blue: [0, 10], green: [11, 20], red: [21, 40] },
         { id: 'raw_temp', title: 'Некомпенсированная температура воздуха', unit: '°C', blue: [0, 10], green: [11, 20], red: [21, 40] },
-        { id: 'humidity', title: 'Относительная влажность воздуха', unit: '%', blue: [0, 30], green: [31, 60], red: [61, 100] },
-        { id: 'raw_hum', title: 'Некомпенсированная влажность воздуха', unit: '%', blue: [0, 30], green: [31, 60], red: [61, 100] },
-        { id: 'press', title: 'Атмосферное давление', unit: 'mmHg', blue: [700, 750], green: [751, 800], red: [801, 850] },
-        { id: 'gas', title: 'Электрическое сопротивление воздуха', unit: 'KΩ', blue: [0, 5], green: [6, 15], red: [16, 30] },
-        { id: 'ecCO2', title: 'Эквивалентная концентрация CO₂', unit: 'ppm', blue: [0, 400], green: [401, 1000], red: [1001, 5000] },
+        { id: 'humidity', title: 'Относительная влажность воздуха', unit: '%', blue: [61, 100], green: [31, 60], red: [0, 30] },
+        { id: 'raw_hum', title: 'Некомпенсированная влажность воздуха', unit: '%', blue: [61, 100], green: [31, 60], red: [0, 30] },
+        { id: 'press', title: 'Атмосферное давление', unit: 'mmHg', blue: [600, 720], green: [721, 770], red: [771, 800]  },
+        { id: 'gas', title: 'Электрическое сопротивление воздуха', unit: 'KΩ', blue: [0, 10], green: [11, 50], red: [51, 100] },
+        { id: 'ecCO2', title: 'Эквивалентная концентрация CO₂', unit: 'ppm', blue: [0, 200], green: [201, 600], red: [601, 5000] },
         { id: 'bVOC', title: 'Концентрация ЛОВ', unit: 'ppm', blue: [0, 0.5], green: [0.6, 1.5], red: [1.6, 3.0] },
-        { id: 'IAQ', title: 'Динамический индекс качества воздуха', unit: 'D-IAQ', blue: [0, 50], green: [51, 100], red: [101, 150] },
-        { id: 'SIAQ', title: 'Статический индекс качества воздуха', unit: 'S-IAQ', blue: [0, 50], green: [51, 100], red: [101, 150] },
-        { id: 'IAQ_ACC', title: 'Точность индекса качества воздуха', unit: 'QoS', blue: [0, 50], green: [51, 100], red: [101, 150] },
-        { id: 'status', title: 'Ошибки работы датчика', unit: 'CODE', blue: [0, 0], green: [1, 5], red: [6, 10] },
-        { id: 'rad_dyn', title: 'Динамический уровень радиации', unit: 'μR/h', blue: [0, 10], green: [11, 20], red: [21, 50] },
-        { id: 'rad_stat', title: 'Статический уровень радиации', unit: 'μR/h', blue: [0, 10], green: [11, 20], red: [21, 50] },
+        { id: 'IAQ', title: 'Динамический индекс качества воздуха', unit: 'D-IAQ', blue: [101, 200], green: [0, 100], red: [201, 500] },
+        { id: 'SIAQ', title: 'Статический индекс качества воздуха', unit: 'S-IAQ', blue: [101, 200], green: [0, 100], red: [201, 500] },
+        { id: 'IAQ_ACC', title: 'Точность индекса качества воздуха', unit: 'QoS', blue: [1, 2], green: [3, 5], red: [0, 0] },
+        { id: 'status', title: 'Ошибки работы датчика', unit: 'CODE', blue: [1, 2], green: [0, 0], red: [2, 10] },
+        { id: 'rad_dyn', title: 'Динамический уровень радиации', unit: 'μR/h', blue: [30, 50], green: [0, 29], red: [51, 500] },
+        { id: 'rad_stat', title: 'Статический уровень радиации', unit: 'μR/h', blue: [30, 50], green: [0, 29], red: [51, 500] },
     ];
 
     // Функция для получения цвета по значению
