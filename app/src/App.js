@@ -80,7 +80,7 @@ const App = () => {
             </Typography>
             <Grid container spacing={3}>
                 {cards.map((card) => (
-                    <Grid item xs={12} sm={6} md={4} key={card.id}>
+                    <Grid item xs={12} sm={6} md={3} key={card.id}> {/* Используем md={3} для 4 элементов в ряду */}
                         <Paper className="metric-card" elevation={3}>
                             <Typography variant="h6" align="center" className="card-title">
                                 {card.title}
@@ -95,7 +95,7 @@ const App = () => {
                     </Grid>
                 ))}
                 {weatherCards.map((card) => (
-                    <Grid item xs={12} sm={6} md={4} key={card.id}>
+                    <Grid item xs={12} sm={6} md={3} key={card.id}> {/* Используем md={3} для 4 элементов в ряду */}
                         <Paper className="metric-card" elevation={3}>
                             <Typography variant="h6" align="center" className="card-title">
                                 {card.title}
