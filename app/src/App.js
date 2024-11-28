@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import MetricCard from './components/MetricCard';
-import './App.css';
 import { createClient } from 'redis';
 
 const App = () => {
