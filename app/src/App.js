@@ -9,43 +9,58 @@ const App = () => {
         { id: 'weatherHum', title: 'Влажность на улице', unit: '%' },
     ];
 
-    useEffect(() => {
-        // Загружаем данные из API
-        const fetchData = async () => {
-            try {
-                const response = await fetch('/api/data');
+    // Функция для загрузки метрик с сервера
+    const fetchData = async () => {
+        try {
+            const response = await fetch('/api/data');
+            if (response.ok) {
                 const data = await response.json();
-                setMetrics(data);
-            } catch (error) {
-                console.error('Error fetching metrics:', error);
-            }
-        };
-
-        const fetchWeather = async () => {
-            try {
-                const response = await fetch('https://wttr.in/Moscow?format=%t+%h');
-                const weather = await response.text();
                 setMetrics((prevMetrics) => ({
                     ...prevMetrics,
-                    weatherTemp: parseFloat(weather.split(' ')[0].replace('°C', '')),
-                    weatherHum: parseFloat(weather.split(' ')[1].replace('%', '')),
+                    ...data,  // Обновляем метрики
                 }));
-            } catch (error) {
-                console.error('Error fetching weather data:', error);
+            } else {
+                console.error('Error fetching metrics: ', response.statusText);
             }
-        };
+        } catch (error) {
+            console.error('Error fetching metrics:', error);
+        }
+    };
 
+    // Функция для загрузки данных о погоде
+    const fetchWeather = async () => {
+        try {
+            const response = await fetch('https://wttr.in/Moscow?format=%t+%h');
+            const weather = await response.text();
+            const newWeather = {
+                weatherTemp: parseFloat(weather.split(' ')[0].replace('°C', '')),
+                weatherHum: parseFloat(weather.split(' ')[1].replace('%', '')),
+            };
+
+            // Обновляем только погоду, если данные о погоде изменились
+            setMetrics((prevMetrics) => ({
+                ...prevMetrics,
+                ...newWeather,
+            }));
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+        }
+    };
+
+    // Загружаем данные из API и погоду
+    useEffect(() => {
         fetchData();
         fetchWeather();
 
         const interval = setInterval(() => {
             fetchData();
             fetchWeather();
-        }, 3000); // обновление каждые 15 минут
+        }, 3000); // обновление каждые 3 секунды
 
-        return () => clearInterval(interval);
+        return () => clearInterval(interval); // очистка интервала
     }, []);
 
+    // Массив метрик
     const cards = [
         { id: 'temp', title: 'Температура воздуха', unit: '°C' },
         { id: 'raw_temp', title: 'Некомпенсированная температура воздуха', unit: '°C' },
@@ -71,7 +86,7 @@ const App = () => {
                     <MetricCard
                         key={card.id}
                         title={card.title}
-                        value={metrics[card.id]}
+                        value={metrics[card.id] || '--'}  {/* Показываем значение или прочерк, если нет */}
                         unit={card.unit}
                     />
                 ))}
@@ -79,7 +94,7 @@ const App = () => {
                     <MetricCard
                         key={card.id}
                         title={card.title}
-                        value={metrics[card.id]}
+                        value={metrics[card.id] || '--'}  {/* Показываем значение или прочерк, если нет */}
                         unit={card.unit}
                     />
                 ))}
@@ -89,5 +104,3 @@ const App = () => {
 };
 
 export default App;
-
-
