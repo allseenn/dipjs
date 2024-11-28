@@ -85,7 +85,7 @@ const App = () => {
                             <Typography variant="body1" align="center" className="card-title">
                                 {card.title}
                             </Typography>
-                            <Typography variant="h4" align="center" className="card-value">
+                            <Typography variant="h4" align="center" className="card-value" data-id={card.id}>
                                 {metrics[card.id] ?? '--'} {/* Значение метрики */}
                             </Typography>
                             <Typography variant="body2" align="center" className="card-unit">
@@ -100,7 +100,7 @@ const App = () => {
                             <Typography variant="body2" align="center" className="card-title">
                                 {card.title}
                             </Typography>
-                            <Typography variant="h4" align="center" className="card-value">
+                            <Typography variant="h4" align="center" className="card-value" data-id={card.id}>
                                 {metrics[card.id] ?? '--'}
                             </Typography>
                             <Typography variant="body2" align="center" className="card-unit">
