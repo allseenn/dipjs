@@ -73,6 +73,13 @@ const App = () => {
         { id: 'rad_stat', title: 'Статический уровень радиации', unit: 'μR/h' },
     ];
 
+    const getColor = (value, card) => {
+        if (value >= card.blue[0] && value <= card.blue[1]) return 'blue';
+        if (value >= card.green[0] && value <= card.green[1]) return 'green';
+        if (value >= card.red[0] && value <= card.red[1]) return 'red';
+        return 'black';  // если значение вне диапазона, применяем черный цвет
+    };
+
     return (
         <Container maxWidth="lg" className="container my-4">
             <Typography variant="h3" align="center" gutterBottom>
@@ -85,7 +92,14 @@ const App = () => {
                             <Typography variant="body1" align="center" className="card-title">
                                 {card.title}
                             </Typography>
-                            <Typography variant="h4" align="center" className="card-value" data-id={card.id} data-value={metrics[card.id]}>
+                            <Typography variant="h4" align="center" className="card-value"
+                            sx={{
+                                color: (theme) => {
+                                    const value = metrics[card.id];
+                                    return value !== undefined ? getColor(value, card) : 'black';
+                                },
+                            }}
+                            >
                                 {metrics[card.id] ?? '--'} {/* Значение метрики */}
                             </Typography>
                             <Typography variant="body2" align="center" className="card-unit">
@@ -100,7 +114,14 @@ const App = () => {
                             <Typography variant="body2" align="center" className="card-title">
                                 {card.title}
                             </Typography>
-                            <Typography variant="h4" align="center" className="card-value" data-id={card.id} data-value={metrics[card.id]}>
+                            <Typography variant="h4" align="center" className="card-value" 
+                            sx={{
+                                color: (theme) => {
+                                    const value = metrics[card.id];
+                                    return value !== undefined ? getColor(value, card) : 'black';
+                                },
+                            }}
+                            >
                                 {metrics[card.id] ?? '--'}
                             </Typography>
                             <Typography variant="body2" align="center" className="card-unit">
