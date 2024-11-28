@@ -13,7 +13,7 @@
 #include <hiredis.h>
 #include "bsec_integration.h"
 #define DESTZONE "TZ=Europe/Moscow"
-#define temp_offset (2.0f)
+#define temp_offset (2.4f)
 #define sample_rate_mode (BSEC_SAMPLE_RATE_LP)
 
 int g_i2cFid; // I2C Linux device handle
