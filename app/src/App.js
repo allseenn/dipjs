@@ -10,11 +10,13 @@ const App = () => {
         { id: 'weatherHum', title: 'Влажность на улице', unit: '%' },
     ];
 
+    // Функция для получения данных с API
     const fetchData = async () => {
         try {
             const response = await fetch('/api/data');
             if (response.ok) {
                 const data = await response.json();
+                console.log('Fetched data:', data); // Логирование для дебага
                 setMetrics((prevMetrics) => ({
                     ...prevMetrics,
                     ...data,
@@ -27,10 +29,12 @@ const App = () => {
         }
     };
 
+    // Функция для получения данных о погоде
     const fetchWeather = async () => {
         try {
             const response = await fetch('https://wttr.in/Moscow?format=%t+%h');
             const weather = await response.text();
+            console.log('Fetched weather:', weather); // Логирование для дебага
             const newWeather = {
                 weatherTemp: parseFloat(weather.split(' ')[0].replace('°C', '')),
                 weatherHum: parseFloat(weather.split(' ')[1].replace('%', '')),
@@ -46,14 +50,17 @@ const App = () => {
     };
 
     useEffect(() => {
+        // Запрос данных при монтировании компонента
         fetchData();
         fetchWeather();
 
+        // Устанавливаем интервал для обновления данных
         const interval = setInterval(() => {
             fetchData();
             fetchWeather();
         }, 3000);
 
+        // Очищаем интервал при размонтировании компонента
         return () => clearInterval(interval);
     }, []);
 
@@ -74,11 +81,12 @@ const App = () => {
         { id: 'rad_stat', title: 'Статический уровень радиации', unit: 'μR/h', blue: [0, 10], green: [11, 20], red: [21, 50] },
     ];
 
+    // Функция для получения цвета по значению
     const getColor = (value, card) => {
         if (value >= card.blue[0] && value <= card.blue[1]) return 'blue';
         if (value >= card.green[0] && value <= card.green[1]) return 'green';
         if (value >= card.red[0] && value <= card.red[1]) return 'red';
-        return 'black';
+        return 'black'; // если значение вне диапазона, возвращаем черный
     };
 
     return (
