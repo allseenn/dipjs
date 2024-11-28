@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MetricCard from './components/MetricCard'; // Существующий компонент
 import { Container, Grid, Typography, Paper } from '@mui/material';
-import './index.css';
+import './index.css'; // Подключаем стили
 
 const App = () => {
     const [metrics, setMetrics] = useState({});
@@ -82,24 +81,30 @@ const App = () => {
             <Grid container spacing={3}>
                 {cards.map((card) => (
                     <Grid item xs={12} sm={6} md={4} key={card.id}>
-                        <Paper elevation={3} sx={{ padding: 2 }}>
-                            <Typography variant="h6" align="center">
+                        <Paper className="metric-card" elevation={3}>
+                            <Typography variant="h6" align="center" className="card-title">
                                 {card.title}
                             </Typography>
-                            <Typography variant="h4" align="center">
-                                {metrics[card.id] ?? '--'} {card.unit} {/* Используем nullish coalescing */}
+                            <Typography variant="h4" align="center" className="card-value">
+                                {metrics[card.id] ?? '--'} {/* Значение метрики */}
+                            </Typography>
+                            <Typography variant="body2" align="center" className="card-unit">
+                                {card.unit} {/* Единица измерения */}
                             </Typography>
                         </Paper>
                     </Grid>
                 ))}
                 {weatherCards.map((card) => (
                     <Grid item xs={12} sm={6} md={4} key={card.id}>
-                        <Paper elevation={3} sx={{ padding: 2 }}>
-                            <Typography variant="h6" align="center">
+                        <Paper className="metric-card" elevation={3}>
+                            <Typography variant="h6" align="center" className="card-title">
                                 {card.title}
                             </Typography>
-                            <Typography variant="h4" align="center">
-                                {metrics[card.id] ?? '--'} {card.unit} {/* Используем nullish coalescing */}
+                            <Typography variant="h4" align="center" className="card-value">
+                                {metrics[card.id] ?? '--'}
+                            </Typography>
+                            <Typography variant="body2" align="center" className="card-unit">
+                                {card.unit}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -110,5 +115,3 @@ const App = () => {
 };
 
 export default App;
-
-

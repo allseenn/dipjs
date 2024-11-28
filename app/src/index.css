@@ -1,24 +1,34 @@
-.grid-container {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    padding: 1rem;
-}
-
-.card-body {
+/* Стиль для карточек */
+.metric-card {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 150px; /* Устанавливаем фиксированную высоту карточек */
+    padding: 16px;
+}
+
+/* Название карточки */
+.card-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Значение метрики */
+.card-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    flex-grow: 1; /* Центрируем метрику по вертикали */
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
 }
 
-.card-text {
-    margin: 0;
+/* Единица измерения */
+.card-unit {
+    font-size: 0.75rem; /* Меньший размер шрифта для единиц измерения */
+    color: #666; /* Светлый цвет для единиц измерения */
 }
 
-.card {
-    cursor: grab;
-    user-select: none;
-}
 
