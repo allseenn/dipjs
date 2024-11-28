@@ -4,14 +4,15 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 150px; /* Устанавливаем фиксированную высоту карточек */
+    max-height: 120px; /* Устанавливаем фиксированную высоту карточек */
+    max-width: 160px;
     padding: 16px;
 }
 
 /* Название карточки */
 .card-title {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin-bottom: 8px;
 }
 
