@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    max-height: 160px; /* Устанавливаем фиксированную высоту карточек */
+    height: 160px; /* Устанавливаем фиксированную высоту карточек */
     padding: 16px;
 }
 
