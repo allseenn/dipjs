@@ -6,8 +6,8 @@ const App = () => {
     const [metrics, setMetrics] = useState({});
 
     const weatherCards = [
-        { id: 'weatherTemp', title: 'Температура на улице', unit: '°C' },
-        { id: 'weatherHum', title: 'Влажность на улице', unit: '%' },
+        { id: 'weatherTemp', title: 'Температура на улице', unit: '°C', blue: [0, 10], green: [11, 20], red: [21, 40] },
+        { id: 'weatherHum', title: 'Влажность на улице', unit: '%', blue: [0, 10], green: [11, 20], red: [21, 40] },
     ];
 
     // Функция для получения данных с API
@@ -128,7 +128,31 @@ const App = () => {
                         </Paper>
                     </Grid>
                 ))}
-
+                {weatherCards.map((card) => (
+                    <Grid item xs={12} sm={6} md={3} key={card.id}>
+                        <Paper className="metric-card" elevation={3}>
+                            <Typography variant="body2" align="center" className="card-title">
+                                {card.title}
+                            </Typography>
+                            <Typography
+                                variant="h4"
+                                align="center"
+                                className="card-value"
+                                sx={{
+                                    color: (theme) => {
+                                        const value = metrics[card.id];
+                                        return value !== undefined ? getColor(value, card) : 'black';
+                                    },
+                                }}
+                            >
+                                {metrics[card.id] ?? '--'}
+                            </Typography>
+                            <Typography variant="body2" align="center" className="card-unit">
+                                {card.unit}
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                ))}
             </Grid>
         </Container>
     );
