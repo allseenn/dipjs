@@ -86,7 +86,7 @@ const App = () => {
                     <MetricCard
                         key={card.id}
                         title={card.title}
-                        value={metrics[card.id] || '--'}  {/* Показываем значение или прочерк, если нет */}
+                        value={metrics[card.id] || '--'} 
                         unit={card.unit}
                     />
                 ))}
@@ -94,7 +94,7 @@ const App = () => {
                     <MetricCard
                         key={card.id}
                         title={card.title}
-                        value={metrics[card.id] || '--'}  {/* Показываем значение или прочерк, если нет */}
+                        value={metrics[card.id] || '--'} 
                         unit={card.unit}
                     />
                 ))}
