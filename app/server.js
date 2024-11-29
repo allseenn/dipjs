@@ -5,11 +5,9 @@ const redis = require('redis');
 const app = express();
 const port = 1080;
 
-// Подключение к Redis
 const redisClient = redis.createClient();
 redisClient.connect().catch(console.error);
 
-// Маршрут для получения данных из Redis
 app.get('/api/data', async (req, res) => {
     try {
         const list = await redisClient.lRange('0', 0, -1);
@@ -36,14 +34,13 @@ app.get('/api/data', async (req, res) => {
     }
 });
 
-// Статический сервер для React-приложения
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Запуск сервера
+
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
