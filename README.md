@@ -1,11 +1,7 @@
-READIS
+# Дипломная работа 
 
-sudo pacman -S redis hiredis
-   
-```c
--I/usr/include/hiredis -D_FILE_OFFSET_BITS=64 -lhiredis
-```
+## Frontend разработка React
 
-npm install express redis @mui/material @emotion/react @emotion/styled
+Ромашин Ростислав Геннадьевич
 
 
