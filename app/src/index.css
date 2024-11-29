@@ -1,34 +1,31 @@
-/* Стиль для карточек */
 .metric-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 160px; /* Устанавливаем фиксированную высоту карточек */
+    height: 160px; 
     padding: 16px;
 }
 
-/* Название карточки */
+
 .card-title {
     font-weight: bold;
     font-size: 0.875rem;
     margin-bottom: 8px;
 }
 
-/* Значение метрики */
 .card-value {
     font-size: 2rem;
     font-weight: bold;
     margin: 0;
-    flex-grow: 1; /* Центрируем метрику по вертикали */
+    flex-grow: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Единица измерения */
 .card-unit {
-    font-size: 0.75rem; /* Меньший размер шрифта для единиц измерения */
-    color: #666; /* Светлый цвет для единиц измерения */
+    font-size: 0.75rem; 
+    color: #666; 
 }
 

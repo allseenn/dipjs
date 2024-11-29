@@ -15,7 +15,6 @@ const App = () => {
             const response = await fetch('/api/data');
             if (response.ok) {
                 const data = await response.json();
-                console.log('Fetched data:', data); 
                 setMetrics((prevMetrics) => ({
                     ...prevMetrics,
                     ...data,
